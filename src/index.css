@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #1B2A4A;
+  --color-navy-light: #2E4373;
+  --color-navy-tint: #EEF1F7;
+  --color-amber: #B9791E;
+  --color-amber-tint: #FBF1DF;
+  --color-danger: #A83A2C;
+  --color-danger-tint: #FBEBE7;
+  --color-success: #2B7A5E;
+  --color-success-tint: #E9F4EF;
+  --color-ink: #14171F;
+  --color-muted: #5B5F6B;
+  --color-line: #E4E2DC;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+body {
+  background: white;
+  color: var(--color-ink);
+}
