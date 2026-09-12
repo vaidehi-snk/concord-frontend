@@ -66,3 +66,12 @@ export async function getSavingsReport({ companyId } = {}) {
   const res = await fetch(`${BASE_URL}/disputes/report/summary?${params}`);
   return handle(res);
 }
+
+export async function batchDraftEmail(disputeIds) {
+  const res = await fetch(`${BASE_URL}/negotiate/batch-draft`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ disputeIds }),
+  });
+  return handle(res);
+}

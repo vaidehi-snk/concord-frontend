@@ -225,6 +225,20 @@ export default function DisputeDetail() {
         </span>
       </div>
 
+      {dispute.publicToken && (
+        <div className="mb-6 bg-navy-tint rounded-lg p-4 flex items-center justify-between gap-3">
+          <div className="text-xs text-muted">
+            Vendor response link — no login needed, works straight from an email
+          </div>
+          <button
+            onClick={() => navigator.clipboard.writeText(`${window.location.origin}/respond/${dispute.publicToken}`)}
+            className="text-xs font-semibold text-navy bg-white border border-line px-3 py-1.5 rounded-md hover:bg-navy hover:text-white hover:border-navy transition-colors shrink-0"
+          >
+            Copy link
+          </button>
+        </div>
+      )}
+
       <button
         onClick={handleDraft}
         disabled={drafting}
