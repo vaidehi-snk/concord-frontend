@@ -123,7 +123,13 @@ export default function Upload() {
             hint={t.hint}
             file={files[t.key]}
             status={uploaded[t.key]?.parseStatus}
-            onChange={(file) => setFiles((prev) => ({ ...prev, [t.key]: file }))}
+            onChange={(file) => {
+              setFiles((prev) => ({ ...prev, [t.key]: file }));
+              // A newly-selected file hasn't been uploaded/parsed yet — clear
+              // any stale status badge from a previous file in this slot.
+              setUploaded((prev) => ({ ...prev, [t.key]: null }));
+              setResult(null);
+            }}
           />
         ))}
       </div>

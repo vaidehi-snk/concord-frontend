@@ -44,6 +44,15 @@ export async function draftSettlementEmail(disputeId) {
   return handle(res);
 }
 
+export async function logVendorReply(disputeId, replyText) {
+  const res = await fetch(`${BASE_URL}/negotiate/${disputeId}/reply`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ replyText }),
+  });
+  return handle(res);
+}
+
 export async function listVendors({ companyId } = {}) {
   const params = new URLSearchParams();
   if (companyId) params.set('companyId', companyId);
