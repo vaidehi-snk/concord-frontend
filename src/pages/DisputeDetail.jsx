@@ -16,9 +16,51 @@ const FIELD_LABELS = {
 };
 
 // Builds the "why was this flagged" breakdown from the documents already
-// populated on the dispute — no extra API call needed, since PO/DN/Invoice
-// extracted fields are already available client-side.
+// populated on the dispute — no extra API call needed. Line-item flags
+// (the normal case now) embed the item name in quotes in the description,
+// e.g. `"Wireless Mouse": PO ordered 5, Invoice bills for 8.` — this pulls
+// that item back out and shows the full row from each document, rather than
+// a flat single-value comparison that no longer matches how flags are made.
+function findLineItem(lineItems, name) {
+  if (!lineItems || !name) return null;
+  const norm = name.toLowerCase().trim();
+  return lineItems.find((i) => (i.description || '').toLowerCase().trim() === norm) || null;
+}
+
 function buildExplanation(flag, dispute) {
+  const itemMatch = flag.description.match(/^"([^"]+)"/);
+  const itemName = itemMatch ? itemMatch[1] : null;
+
+  if (itemName) {
+    const poItem = findLineItem(dispute.po?.extracted?.lineItems, itemName);
+    const invItem = findLineItem(dispute.invoice?.extracted?.lineItems, itemName);
+    const dnItem = findLineItem(dispute.deliveryNote?.extracted?.lineItems, itemName);
+
+    if (flag.field === 'deliveredQuantity') {
+      return {
+        rows: [
+          { label: 'Invoice bills for', value: invItem?.quantity != null ? `${invItem.quantity} units` : 'not found' },
+          { label: 'Delivery Note confirms', value: dnItem?.quantity != null ? `${dnItem.quantity} units received` : 'not found' },
+        ],
+        calc: invItem?.quantity != null && dnItem?.quantity != null
+          ? `Difference: ${Math.abs(invItem.quantity - dnItem.quantity)} units` +
+            (invItem.unitPrice ? ` × ₹${invItem.unitPrice}/unit = ₹${(Math.abs(invItem.quantity - dnItem.quantity) * invItem.unitPrice).toLocaleString('en-IN')}` : '')
+          : null,
+      };
+    }
+
+    const poVal = poItem?.[flag.field];
+    const invVal = invItem?.[flag.field];
+    return {
+      rows: [
+        { label: `PO line item "${itemName}"`, value: poVal != null ? String(poVal) : 'not found on PO' },
+        { label: `Invoice line item "${itemName}"`, value: invVal != null ? String(invVal) : 'not found on Invoice' },
+      ],
+      calc: poVal != null && invVal != null ? `Difference: ${Math.abs(invVal - poVal)}${flag.field === 'unitPrice' ? ' per unit' : ''}` : null,
+    };
+  }
+
+  // Fallback: old flat-field comparison, for documents with no lineItems.
   const po = dispute.po?.extracted;
   const invoice = dispute.invoice?.extracted;
   const dn = dispute.deliveryNote?.extracted;
