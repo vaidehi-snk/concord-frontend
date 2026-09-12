@@ -4,6 +4,7 @@ import Upload from './pages/Upload';
 import Dashboard from './pages/Dashboard';
 import DisputeDetail from './pages/DisputeDetail';
 import Vendors from './pages/Vendors';
+import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/disputes/:id" element={<DisputeDetail />} />
           <Route path="/vendors" element={<Vendors />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>

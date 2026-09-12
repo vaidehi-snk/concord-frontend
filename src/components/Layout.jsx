@@ -27,6 +27,14 @@ const NAV_ITEMS = [
     ),
   },
   {
+    to: '/reports', label: 'Reports',
+    icon: (props) => (
+      <svg viewBox="0 0 24 24" fill="none" {...props}>
+        <path d="M3 3v18h18M7 15l4-5 3 3 5-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
     to: '/settings', label: 'Settings',
     icon: (props) => (
       <svg viewBox="0 0 24 24" fill="none" {...props}>

@@ -59,3 +59,10 @@ export async function listVendors({ companyId } = {}) {
   const res = await fetch(`${BASE_URL}/vendors?${params}`);
   return handle(res);
 }
+
+export async function getSavingsReport({ companyId } = {}) {
+  const params = new URLSearchParams();
+  if (companyId) params.set('companyId', companyId);
+  const res = await fetch(`${BASE_URL}/disputes/report/summary?${params}`);
+  return handle(res);
+}
