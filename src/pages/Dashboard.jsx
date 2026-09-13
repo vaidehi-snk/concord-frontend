@@ -72,7 +72,7 @@ export default function Dashboard() {
           </div>
           {disputes.map((d) => (
             <Link
-              to={`/disputes/${d._id}`}
+              to={`/app/disputes/${d._id}`}
               key={d._id}
               className="grid grid-cols-[1.4fr_1fr_1fr_auto] gap-4 px-5 py-4 border-t border-line items-center hover:bg-navy-tint transition-colors"
             >

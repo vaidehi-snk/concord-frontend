@@ -2,7 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 const NAV_ITEMS = [
   {
-    to: '/', end: true, label: 'Upload',
+    to: '/app', end: true, label: 'Upload',
     icon: (props) => (
       <svg viewBox="0 0 24 24" fill="none" {...props}>
         <path d="M12 4v12m0-12l-4 4m4-4l4 4M4 18v1a2 2 0 002 2h12a2 2 0 002-2v-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -10,7 +10,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    to: '/dashboard', label: 'Disputes',
+    to: '/app/dashboard', label: 'Disputes',
     icon: (props) => (
       <svg viewBox="0 0 24 24" fill="none" {...props}>
         <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.8" />
@@ -19,7 +19,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    to: '/vendors', label: 'Vendors',
+    to: '/app/vendors', label: 'Vendors',
     icon: (props) => (
       <svg viewBox="0 0 24 24" fill="none" {...props}>
         <path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -27,7 +27,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    to: '/reports', label: 'Reports',
+    to: '/app/reports', label: 'Reports',
     icon: (props) => (
       <svg viewBox="0 0 24 24" fill="none" {...props}>
         <path d="M3 3v18h18M7 15l4-5 3 3 5-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -35,7 +35,7 @@ const NAV_ITEMS = [
     ),
   },
   {
-    to: '/settings', label: 'Settings',
+    to: '/app/settings', label: 'Settings',
     icon: (props) => (
       <svg viewBox="0 0 24 24" fill="none" {...props}>
         <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />

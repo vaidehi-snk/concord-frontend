@@ -96,7 +96,7 @@ export default function Upload() {
       });
       setResult(recon);
       if (recon.hasDispute) {
-        setTimeout(() => navigate('/dashboard'), 1200);
+        setTimeout(() => navigate('/app/dashboard'), 1200);
       }
     } catch (err) {
       setError(err.message);

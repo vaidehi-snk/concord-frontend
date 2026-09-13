@@ -107,7 +107,7 @@ export default function Vendors() {
                 )}
                 {openCount === 1 && (
                   <div className="pt-3 border-t border-line text-xs text-muted">
-                    1 open dispute — <Link to={`/disputes/${v.openDisputeIds[0]}`} className="text-navy hover:underline">view it</Link>
+                    1 open dispute — <Link to={`/app/disputes/${v.openDisputeIds[0]}`} className="text-navy hover:underline">view it</Link>
                   </div>
                 )}
 
