@@ -239,6 +239,16 @@ export default function DisputeDetail() {
         </div>
       )}
 
+      <a
+        href={`${BASE_URL}/disputes/${dispute._id}/credit-note`}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-navy border border-line px-4 py-2.5 rounded-lg hover:bg-navy-tint transition-colors mb-6"
+      >
+        <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
+          <path d="M12 4v12m0-12l-4 4m4-4l4 4M4 18v1a2 2 0 002 2h12a2 2 0 002-2v-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Download Credit Note (PDF)
+      </a>
+
       <button
         onClick={handleDraft}
         disabled={drafting}
