@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { draftSettlementEmail, logVendorReply } from '../api/client';
-import { getToken } from '../api/auth';
+import { draftSettlementEmail, logVendorReply, approveDraft } from '../api/client';
+import { getToken, getSession } from '../api/auth';
 
 const SEVERITY_STYLES = {
   HIGH: 'bg-danger-tint text-danger',
@@ -102,6 +102,7 @@ export default function DisputeDetail() {
   const [error, setError] = useState('');
   const [drafting, setDrafting] = useState(false);
   const [downloadingCreditNote, setDownloadingCreditNote] = useState(false);
+  const [approving, setApproving] = useState(false);
   const [expanded, setExpanded] = useState({});
   const [replyText, setReplyText] = useState('');
   const [submittingReply, setSubmittingReply] = useState(false);
@@ -132,6 +133,19 @@ export default function DisputeDetail() {
       setError(err.message);
     } finally {
       setDrafting(false);
+    }
+  }
+
+  async function handleApprove() {
+    setApproving(true);
+    setError('');
+    try {
+      await approveDraft(id);
+      fetchDispute();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setApproving(false);
     }
   }
 
@@ -287,6 +301,25 @@ export default function DisputeDetail() {
         {drafting ? 'Drafting…' : latestDraft ? 'Re-draft settlement email' : 'Draft settlement email with AI'}
       </button>
 
+      {dispute.status === 'pending_approval' && (
+        <div className="mt-4 bg-amber-tint border border-amber/25 rounded-lg p-4 flex items-center justify-between gap-3">
+          <div className="text-sm text-amber font-medium">
+            Awaiting manager/admin approval — the vendor can't see this draft yet.
+          </div>
+          {['admin', 'manager'].includes(getSession()?.user?.role) ? (
+            <button
+              onClick={handleApprove}
+              disabled={approving}
+              className="text-xs font-semibold text-white bg-navy px-3.5 py-2 rounded-md hover:bg-navy-light transition-colors disabled:opacity-40 shrink-0"
+            >
+              {approving ? 'Approving…' : 'Approve'}
+            </button>
+          ) : (
+            <span className="text-xs text-muted shrink-0">Only a manager or admin can approve</span>
+          )}
+        </div>
+      )}
+
       {error && <div className="mt-3 text-sm text-danger">{error}</div>}
 
       {dispute.thread.length > 0 && (
@@ -312,7 +345,7 @@ export default function DisputeDetail() {
         </div>
       )}
 
-      {dispute.status !== 'resolved' && dispute.status !== 'dismissed' && dispute.thread.length > 0 && (
+      {['email_drafted', 'awaiting_vendor'].includes(dispute.status) && dispute.thread.length > 0 && (
         <div className="mt-4">
           <label className="block text-sm font-medium text-ink mb-1.5">Log the vendor's reply</label>
           <textarea

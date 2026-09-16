@@ -4,6 +4,7 @@ import { listDisputes } from '../api/client';
 
 const STATUS_STYLES = {
   open: 'bg-danger-tint text-danger',
+  pending_approval: 'bg-amber-tint text-amber',
   email_drafted: 'bg-amber-tint text-amber',
   awaiting_vendor: 'bg-amber-tint text-amber',
   resolved: 'bg-success-tint text-success',

@@ -57,6 +57,11 @@ export async function draftSettlementEmail(disputeId) {
   return handle(res);
 }
 
+export async function approveDraft(disputeId) {
+  const res = await fetch(`${BASE_URL}/negotiate/${disputeId}/approve`, { method: 'POST', headers: authHeaders() });
+  return handle(res);
+}
+
 export async function logVendorReply(disputeId, replyText) {
   const res = await fetch(`${BASE_URL}/negotiate/${disputeId}/reply`, {
     method: 'POST',
