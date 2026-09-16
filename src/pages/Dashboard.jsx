@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listDisputes } from '../api/client';
-import { getSettings } from '../api/settings';
 
 const STATUS_STYLES = {
   open: 'bg-danger-tint text-danger',
@@ -26,13 +25,7 @@ export default function Dashboard() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const { companyId } = getSettings();
-    if (!companyId) {
-      setError('Set your Company ID in Settings first.');
-      setLoading(false);
-      return;
-    }
-    listDisputes({ companyId })
+    listDisputes()
       .then(setDisputes)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

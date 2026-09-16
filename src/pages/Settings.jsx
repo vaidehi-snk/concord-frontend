@@ -1,52 +1,93 @@
 import { useState } from 'react';
-import { getSettings, saveSettings } from '../api/settings';
+import { getSession } from '../api/auth';
+import { inviteTeammate } from '../api/auth';
 
 export default function Settings() {
-  const [settings, setSettings] = useState(getSettings());
-  const [saved, setSaved] = useState(false);
+  const session = getSession();
+  const isAdmin = session?.user?.role === 'admin';
 
-  function handleSave(e) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('member');
+  const [inviting, setInviting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  async function handleInvite(e) {
     e.preventDefault();
-    saveSettings(settings);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setError('');
+    setSuccess('');
+    setInviting(true);
+    try {
+      const teammate = await inviteTeammate({ name, email, password, role });
+      setSuccess(`${teammate.name} added as ${teammate.role}.`);
+      setName('');
+      setEmail('');
+      setPassword('');
+      setRole('member');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setInviting(false);
+    }
   }
 
   return (
     <div className="max-w-md">
       <h1 className="text-2xl font-semibold text-ink tracking-tight mb-2">Settings</h1>
-      <p className="text-muted text-sm mb-7 leading-relaxed">
-        Run <code className="bg-navy-tint text-navy px-1.5 py-0.5 rounded font-mono text-xs">node seed.js</code> in
-        the backend to generate a demo Company and Vendor, then paste their IDs here. This stands in for
-        login until real auth is built.
-      </p>
-      <form onSubmit={handleSave} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-ink mb-1.5">Company ID</label>
-          <input
-            className="w-full border border-line rounded-lg px-3.5 py-2.5 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
-            value={settings.companyId}
-            onChange={(e) => setSettings({ ...settings, companyId: e.target.value })}
-            placeholder="paste companyId from seed.js output"
-          />
+
+      <div className="border border-line rounded-xl p-5 bg-white mb-6 shadow-[0_1px_2px_rgba(20,23,31,0.04)]">
+        <div className="text-sm font-semibold text-ink mb-3">Your account</div>
+        <div className="text-sm space-y-1.5">
+          <div className="flex justify-between"><span className="text-muted">Name</span><span className="text-ink font-medium">{session?.user?.name}</span></div>
+          <div className="flex justify-between"><span className="text-muted">Email</span><span className="text-ink font-medium">{session?.user?.email}</span></div>
+          <div className="flex justify-between"><span className="text-muted">Role</span><span className="text-ink font-medium capitalize">{session?.user?.role}</span></div>
+          <div className="flex justify-between"><span className="text-muted">Company</span><span className="text-ink font-medium">{session?.company?.name}</span></div>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-ink mb-1.5">Vendor ID</label>
-          <input
-            className="w-full border border-line rounded-lg px-3.5 py-2.5 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
-            value={settings.vendorId}
-            onChange={(e) => setSettings({ ...settings, vendorId: e.target.value })}
-            placeholder="paste vendorId from seed.js output"
-          />
+      </div>
+
+      {isAdmin ? (
+        <div className="border border-line rounded-xl p-5 bg-white shadow-[0_1px_2px_rgba(20,23,31,0.04)]">
+          <div className="text-sm font-semibold text-ink mb-1">Add a teammate</div>
+          <p className="text-xs text-muted mb-4">
+            Only admins can add team members. Roles matter once approval workflows are in place — a
+            manager will be able to review before an AI-drafted email sends.
+          </p>
+          <form onSubmit={handleInvite} className="space-y-3">
+            <input
+              required placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}
+              className="w-full border border-line rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
+            />
+            <input
+              required type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}
+              className="w-full border border-line rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
+            />
+            <input
+              required type="password" minLength={8} placeholder="Temporary password (8+ chars)" value={password} onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-line rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
+            />
+            <select
+              value={role} onChange={(e) => setRole(e.target.value)}
+              className="w-full border border-line rounded-lg px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
+            >
+              <option value="member">Member</option>
+              <option value="manager">Manager</option>
+              <option value="admin">Admin</option>
+            </select>
+            {error && <div className="text-sm text-danger">{error}</div>}
+            {success && <div className="text-sm text-success">{success}</div>}
+            <button
+              type="submit" disabled={inviting}
+              className="bg-navy text-white px-4 py-2.5 rounded-lg text-sm font-semibold disabled:opacity-40 hover:bg-navy-light transition-colors"
+            >
+              {inviting ? 'Adding…' : 'Add teammate'}
+            </button>
+          </form>
         </div>
-        <button
-          className="bg-navy text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-navy-light transition-colors shadow-sm"
-          type="submit"
-        >
-          Save
-        </button>
-        {saved && <span className="ml-3 text-sm text-success font-medium">Saved.</span>}
-      </form>
+      ) : (
+        <div className="text-sm text-muted">Only admins can add team members.</div>
+      )}
     </div>
   );
 }

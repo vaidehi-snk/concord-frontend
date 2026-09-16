@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getSavingsReport } from '../api/client';
-import { getSettings } from '../api/settings';
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -19,13 +18,7 @@ export default function Reports() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const { companyId } = getSettings();
-    if (!companyId) {
-      setError('Set your Company ID in Settings first.');
-      setLoading(false);
-      return;
-    }
-    getSavingsReport({ companyId })
+    getSavingsReport()
       .then(setReport)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

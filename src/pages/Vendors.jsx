@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listVendors, batchDraftEmail } from '../api/client';
-import { getSettings } from '../api/settings';
 
 const RISK_STYLES = {
   high: { bar: 'bg-danger', text: 'text-danger', badge: 'bg-danger-tint text-danger' },
@@ -18,13 +17,7 @@ export default function Vendors() {
   const [batchResult, setBatchResult] = useState(null); // { vendorId, draft }
 
   useEffect(() => {
-    const { companyId } = getSettings();
-    if (!companyId) {
-      setError('Set your Company ID in Settings first.');
-      setLoading(false);
-      return;
-    }
-    listVendors({ companyId })
+    listVendors()
       .then(setVendors)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

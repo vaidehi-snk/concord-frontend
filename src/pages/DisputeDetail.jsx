@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { draftSettlementEmail, logVendorReply } from '../api/client';
+import { getToken } from '../api/auth';
 
 const SEVERITY_STYLES = {
   HIGH: 'bg-danger-tint text-danger',
@@ -100,6 +101,7 @@ export default function DisputeDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [drafting, setDrafting] = useState(false);
+  const [downloadingCreditNote, setDownloadingCreditNote] = useState(false);
   const [expanded, setExpanded] = useState({});
   const [replyText, setReplyText] = useState('');
   const [submittingReply, setSubmittingReply] = useState(false);
@@ -108,7 +110,7 @@ export default function DisputeDetail() {
 
   function fetchDispute() {
     setLoading(true);
-    fetch(`${BASE_URL}/disputes/${id}`)
+    fetch(`${BASE_URL}/disputes/${id}`, { headers: { Authorization: `Bearer ${getToken()}` } })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to load dispute');
         return res.json();
@@ -130,6 +132,33 @@ export default function DisputeDetail() {
       setError(err.message);
     } finally {
       setDrafting(false);
+    }
+  }
+
+  // A plain <a href> can't send an Authorization header, and this route is
+  // now protected like everything else — so this fetches the PDF as a blob
+  // with the token attached, then triggers the download manually.
+  async function handleDownloadCreditNote() {
+    setDownloadingCreditNote(true);
+    setError('');
+    try {
+      const res = await fetch(`${BASE_URL}/disputes/${id}/credit-note`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      if (!res.ok) throw new Error('Failed to generate credit note');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `credit-note-${id}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDownloadingCreditNote(false);
     }
   }
 
@@ -239,15 +268,16 @@ export default function DisputeDetail() {
         </div>
       )}
 
-      <a
-        href={`${BASE_URL}/disputes/${dispute._id}/credit-note`}
-        className="inline-flex items-center gap-2 text-sm font-semibold text-navy border border-line px-4 py-2.5 rounded-lg hover:bg-navy-tint transition-colors mb-6"
+      <button
+        onClick={handleDownloadCreditNote}
+        disabled={downloadingCreditNote}
+        className="inline-flex items-center gap-2 text-sm font-semibold text-navy border border-line px-4 py-2.5 rounded-lg hover:bg-navy-tint transition-colors mb-6 disabled:opacity-40"
       >
         <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
           <path d="M12 4v12m0-12l-4 4m4-4l4 4M4 18v1a2 2 0 002 2h12a2 2 0 002-2v-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        Download Credit Note (PDF)
-      </a>
+        {downloadingCreditNote ? 'Generating…' : 'Download Credit Note (PDF)'}
+      </button>
 
       <button
         onClick={handleDraft}

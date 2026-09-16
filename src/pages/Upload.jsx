@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { uploadDocument, runReconciliation } from '../api/client';
-import { getSettings } from '../api/settings';
+import { uploadDocument, runReconciliation, listVendors, createVendor } from '../api/client';
 
 const DOC_TYPES = [
   { key: 'PO', label: 'Purchase Order', hint: 'What was ordered' },
@@ -66,23 +65,52 @@ export default function Upload() {
   const [result, setResult] = useState(null);
   const navigate = useNavigate();
 
+  // Vendor selection — previously a manually-pasted ID in Settings, now a
+  // real dropdown backed by the authenticated company's own vendor list.
+  const [vendors, setVendors] = useState([]);
+  const [vendorId, setVendorId] = useState('');
+  const [addingVendor, setAddingVendor] = useState(false);
+  const [newVendorName, setNewVendorName] = useState('');
+  const [vendorsLoading, setVendorsLoading] = useState(true);
+
+  useEffect(() => {
+    listVendors()
+      .then((v) => {
+        setVendors(v);
+        if (v.length > 0) setVendorId(v[0]._id);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setVendorsLoading(false));
+  }, []);
+
+  async function handleAddVendor() {
+    if (!newVendorName.trim()) return;
+    try {
+      const vendor = await createVendor({ name: newVendorName.trim() });
+      setVendors((prev) => [...prev, vendor]);
+      setVendorId(vendor._id);
+      setNewVendorName('');
+      setAddingVendor(false);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   const allSelected = DOC_TYPES.every((t) => files[t.key]);
 
   async function handleReconcile() {
+    if (!vendorId) {
+      setError('Select or add a vendor first.');
+      return;
+    }
     setBusy(true);
     setError('');
     setResult(null);
-    const { companyId, vendorId } = getSettings();
-    if (!companyId || !vendorId) {
-      setError('Set your Company ID and Vendor ID in Settings first.');
-      setBusy(false);
-      return;
-    }
 
     try {
       const docs = {};
       for (const t of DOC_TYPES) {
-        const doc = await uploadDocument({ file: files[t.key], type: t.key, companyId, vendorId });
+        const doc = await uploadDocument({ file: files[t.key], type: t.key, vendorId });
         docs[t.key] = doc;
         setUploaded((prev) => ({ ...prev, [t.key]: doc }));
       }
@@ -91,7 +119,6 @@ export default function Upload() {
         poId: docs.PO._id,
         deliveryNoteId: docs.DN._id,
         invoiceId: docs.INVOICE._id,
-        companyId,
         vendorId,
       });
       setResult(recon);
@@ -115,6 +142,44 @@ export default function Upload() {
         </p>
       </div>
 
+      <div className="mb-6 max-w-sm">
+        <label className="block text-sm font-medium text-ink mb-1.5">Vendor</label>
+        {vendorsLoading ? (
+          <div className="text-sm text-muted">Loading vendors…</div>
+        ) : addingVendor ? (
+          <div className="flex gap-2">
+            <input
+              autoFocus
+              value={newVendorName}
+              onChange={(e) => setNewVendorName(e.target.value)}
+              placeholder="Vendor name"
+              className="flex-1 border border-line rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
+            />
+            <button onClick={handleAddVendor} className="bg-navy text-white px-4 rounded-lg text-sm font-semibold">Add</button>
+            <button onClick={() => setAddingVendor(false)} className="text-sm text-muted px-2">Cancel</button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <select
+              value={vendorId}
+              onChange={(e) => setVendorId(e.target.value)}
+              className="flex-1 border border-line rounded-lg px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-shadow"
+            >
+              {vendors.length === 0 && <option value="">No vendors yet</option>}
+              {vendors.map((v) => (
+                <option key={v._id} value={v._id}>{v.name}</option>
+              ))}
+            </select>
+            <button
+              onClick={() => setAddingVendor(true)}
+              className="text-sm font-semibold text-navy border border-line px-3.5 rounded-lg hover:bg-navy-tint transition-colors"
+            >
+              + New
+            </button>
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-7">
         {DOC_TYPES.map((t) => (
           <FileSlot
@@ -125,8 +190,6 @@ export default function Upload() {
             status={uploaded[t.key]?.parseStatus}
             onChange={(file) => {
               setFiles((prev) => ({ ...prev, [t.key]: file }));
-              // A newly-selected file hasn't been uploaded/parsed yet — clear
-              // any stale status badge from a previous file in this slot.
               setUploaded((prev) => ({ ...prev, [t.key]: null }));
               setResult(null);
             }}
@@ -135,7 +198,7 @@ export default function Upload() {
       </div>
 
       <button
-        disabled={!allSelected || busy}
+        disabled={!allSelected || !vendorId || busy}
         onClick={handleReconcile}
         className="bg-navy text-white px-5 py-2.5 rounded-lg text-sm font-semibold disabled:opacity-35 disabled:cursor-not-allowed hover:bg-navy-light transition-colors shadow-sm"
       >

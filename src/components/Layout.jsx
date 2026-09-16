@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { getSession, logout } from '../api/auth';
 
 const NAV_ITEMS = [
   {
@@ -46,6 +47,14 @@ const NAV_ITEMS = [
 ];
 
 export default function Layout() {
+  const navigate = useNavigate();
+  const session = getSession();
+
+  function handleLogout() {
+    logout();
+    navigate('/login');
+  }
+
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
       isActive ? 'bg-navy text-white shadow-sm' : 'text-muted hover:text-ink hover:bg-navy-tint'
@@ -73,9 +82,18 @@ export default function Layout() {
         </nav>
 
         <div className="px-5 py-4 border-t border-line">
-          <div className="text-[11px] text-muted leading-relaxed">
-            Autonomous B2B invoice dispute &amp; settlement platform
-          </div>
+          {session?.user && (
+            <div className="mb-3">
+              <div className="text-sm font-medium text-ink truncate">{session.user.name}</div>
+              <div className="text-xs text-muted truncate">{session.company?.name} · {session.user.role}</div>
+            </div>
+          )}
+          <button
+            onClick={handleLogout}
+            className="text-xs font-semibold text-muted hover:text-danger transition-colors"
+          >
+            Log out
+          </button>
         </div>
       </aside>
 
