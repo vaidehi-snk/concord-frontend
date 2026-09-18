@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getSavingsReport } from '../api/client';
+import { getSavingsReport, downloadAuditTrail } from '../api/client';
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -33,12 +33,20 @@ export default function Reports() {
 
   return (
     <div>
-      <div className="mb-7">
-        <h1 className="text-2xl font-semibold text-ink tracking-tight">Savings &amp; Impact</h1>
-        <p className="text-muted text-sm mt-1.5 max-w-xl">
-          "Resolved" reflects disputes the negotiation loop actually closed out — a rough proxy for money
-          recovered or corrected, not just flagged.
-        </p>
+      <div className="mb-7 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-ink tracking-tight">Savings &amp; Impact</h1>
+          <p className="text-muted text-sm mt-1.5 max-w-xl">
+            "Resolved" reflects disputes the negotiation loop actually closed out — a rough proxy for money
+            recovered or corrected, not just flagged.
+          </p>
+        </div>
+        <button
+          onClick={() => downloadAuditTrail().catch((err) => setError(err.message))}
+          className="shrink-0 text-sm font-semibold text-navy border border-line px-4 py-2.5 rounded-lg hover:bg-navy-tint transition-colors whitespace-nowrap"
+        >
+          Export Audit Trail (CSV)
+        </button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

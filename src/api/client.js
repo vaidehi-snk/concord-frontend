@@ -98,3 +98,17 @@ export async function batchDraftEmail(disputeIds) {
   });
   return handle(res);
 }
+
+export async function downloadAuditTrail() {
+  const res = await fetch(`${BASE_URL}/audit-trail/export`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Failed to export audit trail');
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `concord-audit-trail-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+}
