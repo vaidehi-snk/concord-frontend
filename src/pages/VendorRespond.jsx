@@ -18,7 +18,7 @@ function Compare({ c }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[600px] text-sm">
         <thead>
-          <tr className="text-[11px] font-semibold tracking-wide text-muted">
+          <tr className="text-xs font-semibold tracking-wide text-muted">
             <th className="px-4 py-2.5 text-left">Item</th>
             <th className="bg-po px-4 py-2.5 text-right">Ordered (PO)</th>
             <th className="bg-dn px-4 py-2.5 text-right">Received (challan)</th>
@@ -82,7 +82,7 @@ export default function VendorRespond() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-line-2 bg-desk/70 backdrop-blur-xl">
+      <header className="border-b border-line-2 bg-desk/70 ">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Logo />
           <span className="flex items-center gap-1.5 text-xs text-muted">
@@ -103,7 +103,7 @@ export default function VendorRespond() {
             <p className="text-sm text-muted">
               Query from <strong className="text-ink">{data.buyer}</strong> to {data.vendorName}
             </p>
-            <h1 className="mt-2 text-[30px] leading-[1.05] font-bold text-ink sm:text-[40px]">
+            <h1 className="mt-2 text-[30px] leading-[1.05] text-ink sm:text-[40px]">
               Invoice <span className="num">{data.invoiceNumber}</span> doesn’t match what was ordered and received
             </h1>
             <p className="mt-2 max-w-2xl text-ink-2">
@@ -117,9 +117,9 @@ export default function VendorRespond() {
               . Here is exactly what differs. You can accept the adjustment or explain why the invoice is correct.
             </p>
 
-            <section className="mt-6 overflow-hidden rounded-2xl border border-line-2 bg-white/[0.02]">
+            <section className="mt-6 overflow-hidden rounded-2xl border border-line-2 bg-ink/[0.02]">
               <header className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-5 py-4">
-                <h2 className="text-[17px] font-semibold text-ink">
+                <h2 className="text-[17px] text-ink">
                   Reference <span className="num">{data.reference}</span>
                 </h2>
                 <p className="text-sm text-muted">
@@ -148,10 +148,10 @@ export default function VendorRespond() {
                 {done === 'accept' && <Stamp tone="green" land>Accepted</Stamp>}
               </div>
             ) : done === 'contest' ? (
-              <div className="mt-6 rounded-2xl border border-line-2 bg-white/[0.02] px-5 py-4 text-ink">Your explanation has been sent to {data.buyer}. They’ll review it and reply by email.</div>
+              <div className="mt-6 rounded-2xl border border-line-2 bg-ink/[0.02] px-5 py-4 text-ink">Your explanation has been sent to {data.buyer}. They’ll review it and reply by email.</div>
             ) : (
-              <section className="mt-6 rounded-2xl border border-line-2 bg-white/[0.02] p-5">
-                <h2 className="text-[17px] font-semibold text-ink">Your response</h2>
+              <section className="mt-6 rounded-2xl border border-line-2 bg-ink/[0.02] p-5">
+                <h2 className="text-[17px] text-ink">Your response</h2>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <button onClick={() => setMode('accept')} className={`rounded-xl border p-4 text-left transition-colors ${mode === 'accept' ? 'border-ok bg-ok-tint' : 'border-line hover:border-faint'}`}>
                     <CheckCircle2 className="text-ok" size={20} />
@@ -183,10 +183,10 @@ export default function VendorRespond() {
 
             {(data.thread || []).length > 0 && (
               <section className="mt-6">
-                <h2 className="mb-3 text-sm font-bold text-ink">Messages</h2>
+                <h2 className="mb-3 text-sm text-ink">Messages</h2>
                 <ul className="space-y-3">
                   {(data.thread || []).map((t, i) => (
-                    <li key={i} className={`rounded-xl border px-4 py-3 text-sm ${t.direction === 'you' ? 'border-dn-edge/40 bg-dn' : 'border-line-2 bg-white/[0.02]'}`}>
+                    <li key={i} className={`rounded-xl border px-4 py-3 text-sm ${t.direction === 'you' ? 'border-dn-edge/40 bg-dn' : 'border-line-2 bg-ink/[0.02]'}`}>
                       <p className="text-xs text-muted">
                         {t.direction === 'you' ? 'You' : data.buyer}, {date(t.createdAt)}
                       </p>

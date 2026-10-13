@@ -11,7 +11,7 @@ const PAINS = [
   { value: 'short_delivery', goal: 'Catch short deliveries', label: 'Short deliveries', body: 'Billed for more than arrived', icon: PackageX },
   { value: 'price_creep', goal: 'Hold every rate to the PO', label: 'Rates above the PO', body: 'Prices creeping up', icon: TrendingUp },
   { value: 'gst_itc', goal: 'Protect your GST credit', label: 'GST and ITC', body: 'Suppliers not filing, wrong rates', icon: Landmark },
-  { value: 'msme', goal: 'Never miss an MSME deadline', label: 'MSME 45-day rule', body: 'Paying small suppliers late', icon: Clock4 },
+  { value: 'msme', goal: 'Never miss an MSME deadline', label: 'MSME payment deadlines', body: 'Paying small suppliers late', icon: Clock4 },
   { value: 'duplicates', goal: 'Stop duplicate payments', label: 'Duplicate bills', body: 'Paying the same invoice twice', icon: Copy },
   { value: 'vendor_followup', goal: 'Put vendor follow-ups on autopilot', label: 'Chasing vendors', body: 'Credit notes that never come', icon: MessageCircle },
   { value: 'bank_fraud', goal: 'Block payments to changed accounts', label: 'Payment fraud', body: 'Changed bank details', icon: ShieldAlert },
@@ -19,7 +19,7 @@ const PAINS = [
 const INDUSTRIES = ['Auto components', 'Engineering & fabrication', 'Pharma & chemicals', 'Textiles & apparel', 'FMCG & food processing', 'Electronics', 'Construction & infra', 'Trading & distribution', 'Other'];
 const SIZES = ['1–10', '11–50', '51–200', '200+'];
 const VOLUMES = ['Under 50', '50–300', '300–1,000', '1,000+'];
-const SOFTWARE = ['Tally Prime', 'Zoho Books', 'Busy', 'Marg', 'SAP / Oracle', 'Excel', 'Other'];
+const SOFTWARE = ['TallyPrime', 'Zoho Books', 'BUSY', 'Marg', 'SAP / Oracle', 'Excel', 'Other'];
 
 function strength(pw) {
   let s = 0;
@@ -39,7 +39,7 @@ function Chips({ options, value, onChange }) {
           type="button"
           key={o}
           onClick={() => onChange(o)}
-          className={`rounded-full border px-3.5 py-1.5 text-[13px] transition-all ${value === o ? 'border-carbon/60 bg-carbon-tint text-ink shadow-[0_0_20px_-8px_rgba(111,125,255,0.9)]' : 'border-white/[0.08] text-muted hover:border-white/20 hover:text-ink'}`}
+          className={`rounded-full border px-3.5 py-1.5 text-[13px] transition-all ${value === o ? 'border-carbon/60 bg-carbon-tint text-ink' : 'border-ink/[0.08] text-muted hover:border-ink/20 hover:text-ink'}`}
         >
           {o}
         </button>
@@ -56,9 +56,9 @@ function Preview({ f }) {
   return (
     <div className="flex h-full flex-col justify-center">
       <p className="kicker">Your workspace</p>
-      <div className="ring-aurora mt-4 max-w-md rounded-2xl bg-[#0a0e18]/90 p-6 backdrop-blur-xl">
+      <div className="ring-aurora mt-4 max-w-md rounded-2xl bg-paper p-6 ">
         <div className="flex items-start gap-4">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[radial-gradient(circle_at_30%_25%,#3b4690,#141a36)] font-display text-lg font-bold text-carbon-dark ring-1 ring-white/10">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-carbon-tint font-display text-lg font-bold text-carbon-dark ring-1 ring-ink/10">
             {(f.companyName || 'C').trim()[0]?.toUpperCase()}
           </span>
           <div className="min-w-0">
@@ -66,7 +66,7 @@ function Preview({ f }) {
             <p className="mt-0.5 text-[13px] text-muted">{[f.industry, f.teamSize && `${f.teamSize} people`].filter(Boolean).join(', ') || 'Industry and team size'}</p>
           </div>
         </div>
-        <div className="mt-5 space-y-2 border-t border-white/[0.06] pt-5 text-[13px]">
+        <div className="mt-5 space-y-2 border-t border-ink/[0.06] pt-5 text-[13px]">
           <div className="flex justify-between gap-3">
             <span className="text-muted">GSTIN</span>
             {g ? (
@@ -102,12 +102,12 @@ function Preview({ f }) {
             <span className="text-ink-2">{f.accountingSoftware || '—'}</span>
           </div>
         </div>
-        <div className="mt-5 border-t border-white/[0.06] pt-5">
+        <div className="mt-5 border-t border-ink/[0.06] pt-5">
           <p className="text-[13px] font-semibold text-ink">Your first week</p>
           <ul className="mt-3 space-y-2 text-[13px]">
             {(pains.length ? pains : PAINS.slice(0, 3)).slice(0, 4).map((p) => (
               <li key={p.value} className={`flex items-center gap-2.5 ${pains.length ? 'text-ink-2' : 'text-faint'}`}>
-                <span className={`flex h-5 w-5 items-center justify-center rounded-full ${pains.length ? 'bg-ok/15 text-ok ring-1 ring-ok/30' : 'border border-white/10'}`}>
+                <span className={`flex h-5 w-5 items-center justify-center rounded-full ${pains.length ? 'bg-ok/15 text-ok ring-1 ring-ok/30' : 'border border-ink/10'}`}>
                   <Check size={11} />
                 </span>
                 {p.goal}
@@ -173,7 +173,7 @@ export default function Register() {
         <div className="flex gap-2">
           {STEPS.map((s, i) => (
             <div key={s} className="flex-1">
-              <div className={`h-[3px] rounded-full transition-all duration-500 ${i <= step ? 'bg-[linear-gradient(90deg,#8592ff,#2ed3b7)] shadow-[0_0_10px_rgba(111,125,255,0.7)]' : 'bg-white/[0.08]'}`} />
+              <div className={`h-[3px] rounded-full transition-all duration-500 ${i <= step ? 'bg-ink' : 'bg-ink/[0.08]'}`} />
               <p className={`mt-2 text-[12px] ${i === step ? 'font-semibold text-ink' : 'text-faint'}`}>
                 {i + 1}. {s}
               </p>
@@ -185,7 +185,7 @@ export default function Register() {
       <form onSubmit={next} key={step} className="animate-rise">
         {step === 0 && (
           <>
-            <h1 className="text-[34px] leading-[1.05] font-semibold tracking-[-0.04em] text-ink">Create your workspace</h1>
+            <h1 className="text-[34px] leading-[1.05] text-ink">Create your workspace</h1>
             <p className="mt-2 text-[15px] text-muted">Start with you. You’ll be the admin and can invite your team later.</p>
             <div className="mt-8 space-y-4">
               <ErrorNote error={error} />
@@ -207,7 +207,7 @@ export default function Register() {
                 </span>
                 <span className="mt-2 flex gap-1.5">
                   {[0, 1, 2, 3].map((i) => (
-                    <span key={i} className={`h-1 flex-1 rounded-full transition-colors ${i < pw ? (pw <= 1 ? 'bg-stamp' : pw === 2 ? 'bg-wait' : 'bg-ok') : 'bg-white/[0.08]'}`} />
+                    <span key={i} className={`h-1 flex-1 rounded-full transition-colors ${i < pw ? (pw <= 1 ? 'bg-stamp' : pw === 2 ? 'bg-wait' : 'bg-ok') : 'bg-ink/[0.08]'}`} />
                   ))}
                 </span>
                 <span className="mt-1.5 block text-xs text-muted">{f.password ? (f.password.length < 8 ? 'At least 8 characters' : ['Weak', 'Weak', 'Okay', 'Strong', 'Very strong'][pw]) : 'At least 8 characters. A mix of letters, numbers and symbols is best.'}</span>
@@ -218,7 +218,7 @@ export default function Register() {
 
         {step === 1 && (
           <>
-            <h1 className="text-[34px] leading-[1.05] font-semibold tracking-[-0.04em] text-ink">Your company</h1>
+            <h1 className="text-[34px] leading-[1.05] text-ink">Your company</h1>
             <p className="mt-2 text-[15px] text-muted">So Concord can check that invoices are billed to you, and set sensible rules.</p>
             <div className="mt-8 space-y-5">
               <ErrorNote error={error} />
@@ -264,7 +264,7 @@ export default function Register() {
 
         {step === 2 && (
           <>
-            <h1 className="text-[34px] leading-[1.05] font-semibold tracking-[-0.04em] text-ink">What costs you most?</h1>
+            <h1 className="text-[34px] leading-[1.05] text-ink">What costs you most?</h1>
             <p className="mt-2 text-[15px] text-muted">Pick any. Concord sets up your first week around them — every check still runs on every purchase.</p>
             <ErrorNote error={error} />
             <div className="mt-8 grid grid-cols-2 gap-2.5">
@@ -275,7 +275,7 @@ export default function Register() {
                     type="button"
                     key={p.value}
                     onClick={() => setF({ ...f, painPoints: on ? f.painPoints.filter((x) => x !== p.value) : [...f.painPoints, p.value] })}
-                    className={`relative rounded-xl border p-3.5 text-left transition-all duration-200 ${on ? 'border-carbon/60 bg-carbon-tint shadow-[0_0_30px_-12px_rgba(111,125,255,0.9)]' : 'border-white/[0.07] bg-white/[0.02] hover:border-white/15'}`}
+                    className={`relative rounded-xl border p-3.5 text-left transition-all duration-200 ${on ? 'border-carbon/60 bg-carbon-tint' : 'border-ink/[0.07] bg-ink/[0.02] hover:border-ink/15'}`}
                   >
                     {on && (
                       <span className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-carbon text-white">

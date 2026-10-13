@@ -42,29 +42,34 @@ export default function Login() {
   return (
     <AuthLayout>
       <div className="animate-rise">
-        <h1 className="text-[34px] leading-[1.05] font-semibold tracking-[-0.04em] text-ink">Welcome back</h1>
+        <h1 className="text-[36px] leading-[1.05] text-ink">Welcome back</h1>
         <p className="mt-2 text-[15px] text-muted">Log in to pick up where your team left off.</p>
       </div>
 
       <form onSubmit={submit} className="animate-rise mt-9 space-y-4 [animation-delay:80ms]">
         <ErrorNote error={error || demo.error} />
-        <label className="block">
-          <span className="label">Work email</span>
+        <div>
+          <label htmlFor="login-email" className="label">
+            Work email
+          </label>
           <span className="relative block">
             <Mail size={16} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-faint" />
-            <input className="input h-11 pl-10" type="email" autoComplete="email" required placeholder="you@company.in" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <input id="login-email" className="input h-11 pl-10" type="email" autoComplete="email" required placeholder="you@company.in" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           </span>
-        </label>
-        <label className="block">
-          <span className="label flex items-center justify-between">
-            Password
-            <button type="button" className="text-[12.5px] font-medium text-carbon-dark transition-colors hover:text-ink" onClick={() => setForgot(true)}>
+        </div>
+        <div>
+          <div className="mb-1.5 flex items-center justify-between">
+            <label htmlFor="login-password" className="label mb-0">
+              Password
+            </label>
+            <button type="button" className="rounded-md py-1 text-[13px] font-medium text-carbon transition-colors hover:text-ink" onClick={() => setForgot(true)}>
               Forgot password?
             </button>
-          </span>
+          </div>
           <span className="relative block">
             <KeyRound size={16} className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-faint" />
             <input
+              id="login-password"
               className="input h-11 pr-11 pl-10"
               type={show ? 'text' : 'password'}
               autoComplete="current-password"
@@ -73,21 +78,21 @@ export default function Login() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               onKeyUp={(e) => setCaps(e.getModifierState?.('CapsLock'))}
             />
-            <button type="button" className="absolute top-1/2 right-2 -translate-y-1/2 rounded-md p-1.5 text-faint transition-colors hover:text-ink" onClick={() => setShow((x) => !x)} aria-label={show ? 'Hide password' : 'Show password'}>
+            <button type="button" className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-md p-2 text-muted transition-colors hover:text-ink" onClick={() => setShow((x) => !x)} aria-label={show ? 'Hide password' : 'Show password'}>
               {show ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </span>
           {caps && <span className="mt-1.5 block text-xs text-wait">Caps Lock is on</span>}
-        </label>
+        </div>
         <button className="btn-primary h-11 w-full text-[15px]" disabled={busy}>
           {busy ? <Loader2 size={16} className="animate-spin" /> : null} Log in
         </button>
       </form>
 
       <div className="animate-rise my-9 flex items-center gap-3 text-xs text-faint [animation-delay:160ms]">
-        <span className="h-px flex-1 bg-white/[0.07]" />
+        <span className="h-px flex-1 bg-line" />
         or explore the sample company
-        <span className="h-px flex-1 bg-white/[0.07]" />
+        <span className="h-px flex-1 bg-line" />
       </div>
 
       <div className="animate-rise [animation-delay:200ms]">
@@ -99,11 +104,11 @@ export default function Login() {
               role="radio"
               aria-checked={role === r.value}
               onClick={() => setRole(r.value)}
-              className={`rounded-xl border p-3 text-left transition-all duration-200 ${role === r.value ? 'border-carbon/60 bg-carbon-tint shadow-[0_0_30px_-12px_rgba(111,125,255,0.9)]' : 'border-white/[0.07] bg-white/[0.02] hover:border-white/15'}`}
+              className={`rounded-xl border p-3 text-left transition-all duration-200 ${role === r.value ? 'border-ink bg-paper shadow-[inset_0_0_0_1px_var(--color-ink)]' : 'border-ink/[0.07] bg-ink/[0.02] hover:border-ink/15'}`}
             >
-              <r.icon size={16} className={role === r.value ? 'text-carbon-dark' : 'text-muted'} />
+              <r.icon size={16} className={role === r.value ? 'text-stamp' : 'text-muted'} />
               <p className="mt-2 text-[13px] font-semibold text-ink">{r.label}</p>
-              <p className="mt-0.5 text-[11.5px] leading-snug text-muted">{r.body}</p>
+              <p className="mt-0.5 text-xs leading-snug text-muted">{r.body}</p>
             </button>
           ))}
         </div>
@@ -117,7 +122,7 @@ export default function Login() {
 
       <p className="mt-10 text-sm text-muted">
         New to Concord?{' '}
-        <Link to="/register" className="font-semibold text-carbon-dark transition-colors hover:text-ink">
+        <Link to="/register" className="font-semibold text-carbon underline-offset-2 transition-colors hover:underline">
           Create a workspace
         </Link>
       </p>

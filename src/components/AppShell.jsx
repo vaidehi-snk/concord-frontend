@@ -1,7 +1,7 @@
 import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Inbox, Layers, FileWarning, Building2, Wallet, MessageSquareText, Settings, Search, Menu, X, LogOut, Upload, CornerDownLeft, Landmark } from 'lucide-react';
-import { api, session } from '../lib/api';
+import { api, session, warmUp } from '../lib/api';
 import { Logo, Avatar, DocChip, Skeleton } from './ui';
 import { money } from '../lib/format';
 
@@ -23,10 +23,10 @@ function Sidebar({ kpis, onNavigate }) {
   const navigate = useNavigate();
   const s = session.data;
   const link = ({ isActive }) =>
-    `group relative flex items-center gap-3 rounded-[10px] px-3 py-2 text-[13.5px] font-medium transition-all duration-200 ${
+    `group relative flex items-center gap-3 rounded-[10px] px-3 py-2.5 text-[14px] font-medium transition-all duration-200 ${
       isActive
-        ? 'bg-white/[0.06] text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] before:absolute before:top-2 before:bottom-2 before:-left-3 before:w-[3px] before:rounded-r-full before:bg-carbon before:shadow-[0_0_14px_2px_rgba(111,125,255,0.7)]'
-        : 'text-muted hover:bg-white/[0.035] hover:text-ink'
+        ? 'bg-ink/[0.06] text-ink before:absolute before:top-2 before:bottom-2 before:-left-3 before:w-[3px] before:rounded-r-full before:bg-carbon before:'
+        : 'text-muted hover:bg-ink/[0.035] hover:text-ink'
     }`;
   return (
     <div className="flex h-full flex-col">
@@ -46,12 +46,12 @@ function Sidebar({ kpis, onNavigate }) {
           const label = i > 0 && n.group && n.group !== 'Workspace' && NAV.slice(0, i).every((x) => x.group !== n.group) ? n.group : null;
           return (
             <div key={n.to}>
-            {label && <p className="px-3 pt-5 pb-1.5 text-[11px] font-medium text-faint">{label}</p>}
+            {label && <p className="px-3 pt-5 pb-1.5 text-xs font-medium text-faint">{label}</p>}
             <NavLink to={n.to} end={n.end} className={link} onClick={onNavigate}>
               <n.icon size={17} strokeWidth={1.8} className="shrink-0 opacity-90" />
               <span className="flex-1">{n.label}</span>
               {c > 0 && (
-                <span title={`${c} ${n.countLabel}`} className={`num min-w-5 rounded-full px-1.5 text-center text-[11px] font-semibold ${n.alert ? 'bg-stamp/15 text-[#ff8f87] ring-1 ring-stamp/40' : n.warn ? 'bg-wait-tint text-wait ring-1 ring-wait/30' : 'bg-white/[0.06] text-ink-2'}`}>
+                <span title={`${c} ${n.countLabel}`} className={`num min-w-5 rounded-full px-1.5 text-center text-xs font-semibold ${n.alert ? 'bg-stamp/15 text-stamp ring-1 ring-stamp/40' : n.warn ? 'bg-wait-tint text-wait ring-1 ring-wait/30' : 'bg-ink/[0.06] text-ink-2'}`}>
                   {c}
                 </span>
               )}
@@ -133,8 +133,8 @@ function CommandPalette({ open, onClose }) {
     onClose();
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 pt-[12vh] backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="animate-in w-full max-w-xl overflow-hidden rounded-2xl border border-line bg-raised/95 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9),0_0_0_1px_rgba(111,125,255,0.15),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl" role="dialog" aria-label="Search">
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-ink/40 p-4 pt-[12vh] " onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="animate-in w-full max-w-xl overflow-hidden rounded-2xl border border-line bg-raised/95 shadow-[0_18px_40px_-18px_rgba(27,36,51,0.35)] " role="dialog" aria-label="Search">
         <div className="flex items-center gap-3 border-b border-line-2 px-4">
           <Search size={18} className="text-muted" />
           <input
@@ -164,7 +164,7 @@ function CommandPalette({ open, onClose }) {
               <button
                 onMouseEnter={() => setActive(i)}
                 onClick={() => go(r)}
-                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${i === active ? 'bg-carbon-tint text-ink shadow-[inset_0_0_0_1px_rgba(111,125,255,0.25)]' : 'text-ink-2'}`}
+                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${i === active ? 'bg-carbon-tint text-ink' : 'text-ink-2'}`}
               >
                 {r.icon && <r.icon size={16} className="opacity-70" />}
                 {r.doc && <DocChip type={r.doc} />}
@@ -193,6 +193,9 @@ export default function AppShell() {
       .catch(() => {});
   }, []);
   useEffect(() => {
+    warmUp();
+  }, []);
+  useEffect(() => {
     refresh();
   }, [refresh]);
   useEffect(() => {
@@ -209,12 +212,15 @@ export default function AppShell() {
   return (
     <ShellCtx.Provider value={{ kpis, refresh }}>
       <div className="min-h-screen lg:pl-64">
-        <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-line-2 bg-[linear-gradient(180deg,rgba(14,19,34,0.92),rgba(7,9,16,0.92))] backdrop-blur-xl lg:block">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-line-2 bg-paper  lg:block">
           <Sidebar kpis={kpis} />
         </aside>
         {menu && (
           <div className="fixed inset-0 z-40 lg:hidden">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMenu(false)} />
+            <div className="absolute inset-0 bg-ink/40 " onClick={() => setMenu(false)} />
             <aside className="animate-in absolute inset-y-0 left-0 w-72 border-r border-line bg-paper shadow-2xl">
               <button className="btn-ghost btn-sm absolute top-4 right-3" onClick={() => setMenu(false)} aria-label="Close menu">
                 <X size={18} />
@@ -225,15 +231,15 @@ export default function AppShell() {
         )}
 
         {s?.company?.isDemo && (
-          <div className="border-b border-wait/20 bg-[linear-gradient(90deg,rgba(245,185,71,0.04),rgba(245,185,71,0.10),rgba(245,185,71,0.04))] px-4 py-2 text-center text-[13px] text-ink-2">
-            You're exploring a sample company, <strong className="text-ink">{s.company.name.replace(/\.$/, '')}</strong>. Everything works — try approving a dispute or uploading documents.{' '}
+          <div className="border-b border-wait/20 bg-wait-tint px-4 py-2 text-center text-[13px] text-ink-2">
+            You're exploring a sample company, <strong className="text-ink">{s.company.name.replace(/\.$/, '')}</strong>. Everything works: try approving a dispute or uploading documents.{' '}
             <Link to="/register" className="font-semibold text-wait underline decoration-wait/40 underline-offset-4 hover:decoration-wait">
               Create your own workspace
             </Link>
           </div>
         )}
 
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-line-2 bg-desk/70 px-4 backdrop-blur-xl sm:px-6">
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-line-2 bg-desk/95 px-4 sm:px-6">
           <button className="btn-ghost btn-sm lg:hidden" onClick={() => setMenu(true)} aria-label="Open menu">
             <Menu size={20} />
           </button>
@@ -242,28 +248,28 @@ export default function AppShell() {
           </span>
           <button
             onClick={() => setPalette(true)}
-            className="ml-auto flex h-10 w-full max-w-md items-center gap-3 rounded-[10px] border border-line-2 bg-white/[0.03] px-3 text-sm text-faint transition-all hover:border-line hover:bg-white/[0.05] lg:ml-0"
+            className="ml-auto flex h-10 w-full max-w-md items-center gap-3 rounded-[10px] border border-line bg-paper px-3 text-sm text-muted transition-all hover:border-line lg:ml-0"
           >
             <Search size={16} />
             <span className="hidden flex-1 text-left sm:block">Search disputes, POs, invoices, vendors</span>
-            <kbd className="hidden rounded-md border border-line bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-semibold text-muted sm:block">Ctrl K</kbd>
+            <kbd className="hidden rounded-md border border-line bg-ink/[0.04] px-1.5 py-0.5 text-xs font-semibold text-muted sm:block">Ctrl K</kbd>
           </button>
           <div className="hidden flex-1 lg:block" />
           {kpis && (
             <div className="hidden items-center gap-5 text-sm xl:flex">
               <span className="flex items-center gap-2 text-muted">
-                <span className="h-1.5 w-1.5 rounded-full bg-stamp shadow-[0_0_8px_2px_rgba(255,100,90,0.6)]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-stamp" />
                 At risk <strong className="num font-display text-[15px] font-semibold text-ink">{money(kpis.moneyAtRisk)}</strong>
               </span>
               <span className="flex items-center gap-2 text-muted">
-                <span className="h-1.5 w-1.5 rounded-full bg-ok shadow-[0_0_8px_2px_rgba(63,217,154,0.6)]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-ok" />
                 Recovered <strong className="num font-display text-[15px] font-semibold text-ink">{money(kpis.moneyRecovered)}</strong>
               </span>
             </div>
           )}
         </header>
 
-        <main className="mx-auto w-full max-w-[1320px] px-4 py-8 sm:px-8 lg:py-10">
+        <main id="main" className="mx-auto w-full max-w-[1320px] px-4 py-8 sm:px-8 lg:py-10">
           <Suspense
             fallback={
               <div className="space-y-4">

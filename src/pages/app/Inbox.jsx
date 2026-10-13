@@ -38,7 +38,7 @@ function ResultRow({ r }) {
                   : 'Read, but no PO number found to group it by.'}
           {r.vendorCreated && <span className="text-muted"> New vendor added: {r.vendor?.name}.</span>}
         </p>
-        {r.hold && <p className="mt-1 text-xs text-[#ff8f87]">Payment blocked: {r.hold.detail}</p>}
+        {r.hold && <p className="mt-1 text-xs text-stamp">Payment blocked: {r.hold.detail}</p>}
       </div>
       {r.dispute ? (
         <Link to={`/app/disputes/${r.dispute._id}`} className="btn-danger btn-sm">
@@ -228,7 +228,7 @@ export default function InboxPage() {
             setDrag(false);
             upload(e.dataTransfer.files);
           }}
-          className={`relative flex min-h-[280px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-dashed px-6 py-10 text-center transition-all duration-300 ${drag ? 'border-carbon bg-carbon-tint shadow-[0_0_80px_-10px_rgba(111,125,255,0.6)_inset]' : 'border-line bg-white/[0.015] hover:border-carbon/40'}`}
+          className={`relative flex min-h-[280px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-dashed px-6 py-10 text-center transition-all duration-300 ${drag ? 'border-carbon bg-carbon-tint' : 'border-line bg-ink/[0.015] hover:border-carbon/40'}`}
         >
           {busy === 'upload' ? (
             <>
@@ -238,11 +238,10 @@ export default function InboxPage() {
             </>
           ) : (
             <>
-              <div className="pointer-events-none absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(111,125,255,0.14),transparent)]" />
               <div className="relative flex -space-x-3">
-                <span className="h-14 w-11 -rotate-6 rounded-md bg-sheet-po shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]" />
-                <span className="z-10 h-14 w-11 rounded-md bg-sheet-dn shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]" />
-                <span className="z-20 h-14 w-11 rotate-6 rounded-md bg-sheet-inv shadow-[0_10px_30px_-8px_rgba(0,0,0,0.9)]" />
+                <span className="h-14 w-11 -rotate-6 rounded-md bg-sheet-po shadow-[0_18px_40px_-18px_rgba(27,36,51,0.35)]" />
+                <span className="z-10 h-14 w-11 rounded-md bg-sheet-dn shadow-[0_18px_40px_-18px_rgba(27,36,51,0.35)]" />
+                <span className="z-20 h-14 w-11 rotate-6 rounded-md bg-sheet-inv shadow-[0_18px_40px_-18px_rgba(27,36,51,0.35)]" />
               </div>
               <p className="relative mt-6 font-display text-xl font-semibold text-ink">Drop PDFs or photos here</p>
               <p className="relative mt-1.5 max-w-md text-sm text-muted">Up to 30 files at once, 15 MB each. Digital PDFs from Tally, Zoho or any billing tool, scanned bills, or a phone photo of a challan.</p>
@@ -263,14 +262,14 @@ export default function InboxPage() {
         </div>
 
         <div className={`sheet p-5 ${params.get('sample') ? 'ring-2 ring-carbon/40' : ''}`}>
-          <h2 className="flex items-center gap-2 font-bold text-ink">
+          <h2 className="flex items-center gap-2 text-ink">
             <Sparkles size={16} className="text-carbon-dark" /> Try a sample purchase
           </h2>
           <p className="mt-1 text-sm text-muted">Generates a real PO, challan and invoice as PDFs and sends them through the same reader your uploads use.</p>
           <ul className="mt-4 space-y-2">
             {SAMPLES.map((s) => (
               <li key={s.kind} className="flex items-center gap-2">
-                <button className="flex flex-1 items-center justify-between gap-3 rounded-xl border border-line-2 bg-white/[0.02] px-3.5 py-2.5 text-left transition-all hover:border-carbon/50 hover:bg-carbon-tint disabled:opacity-60" onClick={() => sample(s.kind)} disabled={!!busy}>
+                <button className="flex flex-1 items-center justify-between gap-3 rounded-xl border border-line-2 bg-ink/[0.02] px-3.5 py-2.5 text-left transition-all hover:border-carbon/50 hover:bg-carbon-tint disabled:opacity-60" onClick={() => sample(s.kind)} disabled={!!busy}>
                   <span>
                     <span className="block text-sm font-semibold text-ink">{s.label}</span>
                     <span className="block text-xs text-muted">{s.body}</span>
@@ -295,7 +294,7 @@ export default function InboxPage() {
       {results.length > 0 && (
         <section ref={resultsRef} className="sheet mt-6 scroll-mt-24 overflow-hidden">
           <header className="flex items-center justify-between border-b border-line-2 px-5 py-3.5">
-            <h2 className="text-[17px] font-semibold text-ink">Just processed</h2>
+            <h2 className="text-[17px] text-ink">Just processed</h2>
             <button className="text-sm text-muted hover:text-ink" onClick={() => setResults([])}>
               Clear
             </button>
@@ -310,7 +309,7 @@ export default function InboxPage() {
 
       <section className="sheet mt-6 overflow-hidden">
         <div className="px-5 pt-4">
-          <h2 className="text-[17px] font-semibold text-ink">All documents</h2>
+          <h2 className="text-[17px] text-ink">All documents</h2>
         </div>
         <div className="px-3">
           <Tabs

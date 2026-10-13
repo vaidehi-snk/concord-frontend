@@ -38,10 +38,10 @@ function stepOf(d) {
 const THREAD = {
   outbound_draft: { icon: Bot, label: 'Draft email', tone: 'bg-carbon-tint text-carbon-dark ring-1 ring-carbon/30' },
   approved: { icon: ShieldCheck, label: 'Approved', tone: 'bg-ok-tint text-ok ring-1 ring-ok/30' },
-  outbound_sent: { icon: Send, label: 'Sent', tone: 'bg-white/[0.05] text-ink-2 ring-1 ring-white/10' },
+  outbound_sent: { icon: Send, label: 'Sent', tone: 'bg-ink/[0.05] text-ink-2 ring-1 ring-ink/10' },
   vendor_reply: { icon: Building2, label: 'Vendor reply', tone: 'bg-dn text-wait ring-1 ring-dn-edge/40' },
-  note: { icon: StickyNote, label: 'Note', tone: 'bg-white/[0.05] text-ink-2 ring-1 ring-white/10' },
-  system: { icon: Sparkles, label: 'Concord', tone: 'bg-white/[0.05] text-ink-2 ring-1 ring-white/10' },
+  note: { icon: StickyNote, label: 'Note', tone: 'bg-ink/[0.05] text-ink-2 ring-1 ring-ink/10' },
+  system: { icon: Sparkles, label: 'Concord', tone: 'bg-ink/[0.05] text-ink-2 ring-1 ring-ink/10' },
 };
 
 function CopyButton({ text, label = 'Copy', className = 'btn-secondary' }) {
@@ -184,7 +184,7 @@ export default function DisputeDetail() {
       <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="num text-[30px] leading-none font-semibold tracking-[-0.04em] text-ink">{d.reference}</h1>
+            <h1 className="num text-[30px] leading-none text-ink">{d.reference}</h1>
             <StatusBadge status={d.status} />
             {!closed && due != null && due < 0 && <Badge tone="red">{d.status === 'awaiting_vendor' ? 'Vendor reply ' : ''}{-due}d overdue</Badge>}
           </div>
@@ -206,7 +206,7 @@ export default function DisputeDetail() {
       <ol className="mb-6 grid grid-cols-6 gap-1" aria-label="Progress">
         {STEPS.map((s, i) => (
           <li key={s} className="min-w-0">
-            <div className={`h-[3px] rounded-full transition-all ${i <= step ? (d.status === 'dismissed' && i === 5 ? 'bg-faint' : 'bg-carbon shadow-[0_0_10px_rgba(111,125,255,0.8)]') : 'bg-white/[0.07]'}`} />
+            <div className={`h-[3px] rounded-full transition-all ${i <= step ? (d.status === 'dismissed' && i === 5 ? 'bg-faint' : 'bg-carbon') : 'bg-ink/[0.07]'}`} />
             <p className={`mt-1.5 truncate text-xs ${i === step ? 'font-bold text-ink' : i < step ? 'text-ink-2' : 'text-faint'}`}>{i === 5 && d.status === 'dismissed' ? 'Dismissed' : s}</p>
           </li>
         ))}
@@ -215,9 +215,9 @@ export default function DisputeDetail() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-6">
           {/* NEXT STEP */}
-          <section className="sheet overflow-hidden border-carbon/35 shadow-[0_0_80px_-30px_rgba(111,125,255,0.6)]">
-            <header className="border-b border-line-2 bg-[linear-gradient(90deg,rgba(111,125,255,0.14),transparent)] px-5 py-3.5">
-              <h2 className="text-[17px] font-semibold text-ink">
+          <section className="sheet overflow-hidden border-carbon/35">
+            <header className="border-b border-line-2 bg-carbon-tint px-5 py-3.5">
+              <h2 className="text-[17px] text-ink">
                 {d.status === 'open' && 'Next: draft the email to the vendor'}
                 {d.status === 'pending_approval' && (data.canApprove ? 'Next: review and approve the draft' : 'Waiting for a manager to approve')}
                 {d.status === 'email_drafted' && 'Next: send it from your mailbox'}
@@ -232,7 +232,7 @@ export default function DisputeDetail() {
                   <p className="mb-4 text-sm text-muted">The agent writes the email using the evidence below. Nothing goes to the vendor until a manager approves it.</p>
                   <div className="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="Tone">
                     {TONES.map((t) => (
-                      <button key={t.value} role="radio" aria-checked={tone === t.value} onClick={() => setTone(t.value)} className={`rounded-xl border p-3.5 text-left transition-all ${tone === t.value ? 'border-carbon/70 bg-carbon-tint shadow-[0_0_30px_-10px_rgba(111,125,255,0.8)]' : 'border-line-2 bg-white/[0.02] hover:border-line'}`}>
+                      <button key={t.value} role="radio" aria-checked={tone === t.value} onClick={() => setTone(t.value)} className={`rounded-xl border p-3.5 text-left transition-all ${tone === t.value ? 'border-carbon/70 bg-carbon-tint' : 'border-line-2 bg-ink/[0.02] hover:border-line'}`}>
                         <span className="block text-sm font-semibold text-ink">{t.label}</span>
                         <span className="mt-0.5 block text-xs text-muted">{t.body}</span>
                       </button>
@@ -252,7 +252,7 @@ export default function DisputeDetail() {
                     </span>
                     <span className="num">To: {d.vendor?.contactEmail || 'no email on file'}</span>
                   </div>
-                  <div className="rounded-xl border border-line-2 bg-black/25">
+                  <div className="rounded-xl border border-line-2 bg-ink/[0.035]">
                     <p className="border-b border-line-2 px-4 py-2.5 text-sm">
                       <span className="text-muted">Subject </span>
                       <span className="font-semibold text-ink">{subject}</span>
@@ -345,7 +345,7 @@ export default function DisputeDetail() {
               )}
 
               {assessment && (
-                <div className="animate-in mt-4 rounded-xl border border-line-2 bg-black/25 p-4 text-sm">
+                <div className="animate-in mt-4 rounded-xl border border-line-2 bg-ink/[0.035] p-4 text-sm">
                   <p className="flex items-center gap-2 font-semibold text-ink">
                     <Bot size={16} className="text-carbon-dark" /> Agent’s read:{' '}
                     <Badge tone={assessment.decision === 'RESOLVED' ? 'green' : assessment.decision === 'PARTIAL' ? 'amber' : 'red'}>{assessment.decision === 'ESCALATE' ? 'Pushback' : assessment.decision.toLowerCase()}</Badge>
@@ -369,7 +369,7 @@ export default function DisputeDetail() {
 
           <section className="sheet overflow-hidden">
             <header className="border-b border-line-2 px-5 py-4">
-              <h2 className="text-[17px] font-semibold text-ink">
+              <h2 className="text-[17px] text-ink">
                 {(d.flags || []).length} issue{(d.flags || []).length === 1 ? '' : 's'} found
               </h2>
               <p className="text-sm text-muted">Open one to see which document says what, and how the amount was worked out.</p>
@@ -381,21 +381,21 @@ export default function DisputeDetail() {
 
           <section className="sheet overflow-hidden">
             <header className="border-b border-line-2 px-5 py-4">
-              <h2 className="text-[17px] font-semibold text-ink">Line by line</h2>
+              <h2 className="text-[17px] text-ink">Line by line</h2>
             </header>
             <ThreeWayTable po={d.po} dn={d.deliveryNote} invoice={d.invoice} flags={d.flags} />
           </section>
 
           {data.checks?.length > 0 && (
             <section className="sheet p-5">
-              <h2 className="mb-4 text-[17px] font-semibold text-ink">All checks</h2>
+              <h2 className="mb-4 text-[17px] text-ink">All checks</h2>
               <Checklist checks={data.checks} />
             </section>
           )}
 
           <section className="sheet overflow-hidden">
             <header className="border-b border-line-2 px-5 py-4">
-              <h2 className="text-[17px] font-semibold text-ink">History</h2>
+              <h2 className="text-[17px] text-ink">History</h2>
               <p className="text-sm text-muted">Everything that happened, in order. Included in the audit-trail export.</p>
             </header>
             <ol className="px-5 py-4">
@@ -427,7 +427,7 @@ export default function DisputeDetail() {
                       {long ? (
                         <details className="mt-1" open={t.direction !== 'outbound_draft'}>
                           <summary className="cursor-pointer text-xs text-carbon-dark">{t.direction === 'outbound_draft' ? 'Show email' : 'Show'}</summary>
-                          <p className="mt-2 rounded-lg border border-line-2 bg-black/20 px-3 py-2 whitespace-pre-wrap text-ink-2">{t.body}</p>
+                          <p className="mt-2 rounded-lg border border-line-2 bg-ink/[0.035] px-3 py-2 whitespace-pre-wrap text-ink-2">{t.body}</p>
                         </details>
                       ) : (
                         <p className="text-ink-2">{t.body}</p>

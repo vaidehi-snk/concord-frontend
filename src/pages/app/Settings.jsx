@@ -141,7 +141,7 @@ export default function Settings() {
 
       <div className="space-y-6">
         <section className="sheet p-5 sm:p-6">
-          <h2 className="text-[17px] font-semibold text-ink">Company</h2>
+          <h2 className="text-[17px] text-ink">Company</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label="Company name">
               <input className="input" disabled={!isAdmin} value={company.name || ''} onChange={(e) => setCompany({ ...company, name: e.target.value })} />
@@ -162,7 +162,7 @@ export default function Settings() {
         </section>
 
         <section className="sheet p-5 sm:p-6">
-          <h2 className="text-[17px] font-semibold text-ink">Matching rules</h2>
+          <h2 className="text-[17px] text-ink">Matching rules</h2>
           <p className="mt-1 text-sm text-muted">How strict the 13 checks are. Tight by default — loosen only where your vendors have agreed variances.</p>
           <div className="mt-5 divide-y divide-line-2">
             {RULES.map(([k, label, unit, hint]) => (
@@ -180,7 +180,7 @@ export default function Settings() {
             ))}
           </div>
           <label className="mt-2 flex items-start gap-3 border-t border-line-2 pt-4">
-            <input type="checkbox" className="mt-1 h-4 w-4 accent-[#6f7dff]" disabled={!isAdmin} checked={rules.autopilotFollowUps !== false} onChange={(e) => setRules({ ...rules, autopilotFollowUps: e.target.checked })} />
+            <input type="checkbox" className="mt-1 h-4 w-4 accent-[#2b4c8c]" disabled={!isAdmin} checked={rules.autopilotFollowUps !== false} onChange={(e) => setRules({ ...rules, autopilotFollowUps: e.target.checked })} />
             <span>
               <span className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <Bot size={15} className="text-carbon-dark" /> Autopilot follow-ups
@@ -200,7 +200,7 @@ export default function Settings() {
         <section className="sheet overflow-hidden">
           <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
             <div>
-              <h2 className="text-[17px] font-semibold text-ink">Team</h2>
+              <h2 className="text-[17px] text-ink">Team</h2>
               <p className="text-sm text-muted">Separate who raises disputes from who approves what goes to vendors.</p>
             </div>
             {isAdmin && (
@@ -236,7 +236,7 @@ export default function Settings() {
               </li>
             ))}
           </ul>
-          <dl className="grid gap-2 border-t border-line-2 bg-black/20 px-5 py-4 text-xs sm:grid-cols-3 sm:px-6">
+          <dl className="grid gap-2 border-t border-line-2 bg-ink/[0.035] px-5 py-4 text-xs sm:grid-cols-3 sm:px-6">
             {Object.entries(ROLES).map(([r, d]) => (
               <div key={r}>
                 <dt className="font-semibold text-ink capitalize">{r}</dt>
@@ -247,7 +247,7 @@ export default function Settings() {
         </section>
 
         <section className="sheet p-5 sm:p-6">
-          <h2 className="text-[17px] font-semibold text-ink">Your password</h2>
+          <h2 className="text-[17px] text-ink">Your password</h2>
           <form onSubmit={changeOwnPassword} className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
             <Field label="Current password">
               <input className="input" type="password" autoComplete="current-password" value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} />
@@ -264,7 +264,7 @@ export default function Settings() {
         <section className="sheet overflow-hidden">
           <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line-2 px-5 py-4 sm:px-6">
             <div>
-              <h2 className="text-[17px] font-semibold text-ink">Integrations</h2>
+              <h2 className="text-[17px] text-ink">Integrations</h2>
               <p className="text-sm text-muted">Let documents arrive without anyone opening Concord: from your ERP, a script, or an email address vendors send bills to.</p>
             </div>
           </header>
@@ -281,7 +281,7 @@ export default function Settings() {
               <div className="animate-in rounded-xl border border-ok/30 bg-ok-tint p-4">
                 <p className="text-sm font-semibold text-ink">Copy this key now — it won’t be shown again.</p>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <code className="num rounded-lg bg-black/40 px-3 py-2 text-sm break-all text-ok">{newKey.key}</code>
+                  <code className="num rounded-lg bg-ink/[0.035] px-3 py-2 text-sm break-all text-ok">{newKey.key}</code>
                   <button
                     className="btn-secondary btn-sm"
                     onClick={() => {
@@ -317,7 +317,7 @@ export default function Settings() {
               <p className="text-sm text-muted">No API keys yet.</p>
             )}
             <div className="grid gap-4 lg:grid-cols-2">
-              <div className="rounded-xl border border-line-2 bg-black/20 p-4">
+              <div className="rounded-xl border border-line-2 bg-ink/[0.035] p-4">
                 <p className="flex items-center gap-2 text-sm font-semibold text-ink">
                   <KeyRound size={15} className="text-carbon-dark" /> Push from any system
                 </p>
@@ -325,7 +325,7 @@ export default function Settings() {
   -H "X-API-Key: cnc_live_…" \\
   -F "files=@invoice.pdf" -F "files=@challan.jpg"`}</pre>
               </div>
-              <div className="rounded-xl border border-line-2 bg-black/20 p-4">
+              <div className="rounded-xl border border-line-2 bg-ink/[0.035] p-4">
                 <p className="flex items-center gap-2 text-sm font-semibold text-ink">
                   <Mail size={15} className="text-carbon-dark" /> Forward bills by email
                 </p>
@@ -337,11 +337,11 @@ export default function Settings() {
         </section>
 
         <section className="sheet flex flex-wrap items-start gap-4 p-5 sm:p-6">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line-2 bg-white/[0.03] text-carbon-dark">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line-2 bg-ink/[0.03] text-carbon-dark">
             <Cpu size={18} />
           </span>
           <div className="flex-1">
-            <h2 className="text-[17px] font-semibold text-ink">AI agent</h2>
+            <h2 className="text-[17px] text-ink">AI agent</h2>
             <p className="mt-1 max-w-2xl text-sm text-muted">
               Checks are rules, not AI — the same documents always give the same result. The AI model is used for reading unusual layouts, scanned bills and phone photos, drafting emails to vendors, reading their replies, and answering questions. If it’s unavailable, digital PDFs are still read by rules and emails fall back to templates.
             </p>

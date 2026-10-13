@@ -1,9 +1,9 @@
 import { money } from '../lib/format';
 
-// Categorical order validated for the dark surface #0A0E18 (lightness band, CVD, contrast)
-export const SERIES = ['#7B87F5', '#1FA58A', '#C98422'];
-export const GRID = 'rgba(150,166,230,0.08)';
-export const AXIS = { fontSize: 11, fill: 'rgba(236,239,250,0.42)' };
+// Series colours on the paper surface #FFFDF8: ink-blue, ochre, stamp red
+export const SERIES = ['#2B4C8C', '#B98A2C', '#C8372D'];
+export const GRID = 'rgba(27,36,51,0.08)';
+export const AXIS = { fontSize: 11, fill: '#5b6372' };
 
 export function ChartTooltip({ active, payload, label, labelFormat = (l) => l, valueFormat = money }) {
   if (!active || !payload?.length) return null;

@@ -35,7 +35,7 @@ function Spark({ values = [], color }) {
   );
 }
 
-function Kpi({ label, value, num, fmt, sub, tone = 'ink', to, spark, sparkColor = '#7B87F5', hero = false }) {
+function Kpi({ label, value, num, fmt, sub, tone = 'ink', to, spark, sparkColor = '#2B4C8C', hero = false }) {
   const color = tone === 'red' ? 'text-stamp' : tone === 'green' ? 'text-ok' : 'text-ink';
   const body = (
     <div className={`sheet group relative flex h-full flex-col overflow-hidden p-5 ${hero ? 'ring-aurora' : ''}`}>
@@ -73,8 +73,8 @@ function Pipeline({ k, funnel }) {
     <section className="sheet overflow-hidden">
       <div className="grid grid-cols-2 sm:grid-cols-5">
         {stages.map((st, i) => (
-          <Link key={st.label} to={st.to} className="group relative px-5 py-4 transition-colors hover:bg-white/[0.02]">
-            {i > 0 && <span className="absolute top-1/2 left-0 hidden h-8 w-px -translate-y-1/2 bg-white/[0.06] sm:block" />}
+          <Link key={st.label} to={st.to} className="group relative px-5 py-4 transition-colors hover:bg-ink/[0.02]">
+            {i > 0 && <span className="absolute top-1/2 left-0 hidden h-8 w-px -translate-y-1/2 bg-ink/[0.06] sm:block" />}
             <p className="text-[12px] text-muted">{st.label}</p>
             <p className={`figure mt-1.5 text-[24px] ${st.tone || 'text-ink'}`}>
               <CountUp value={st.value ?? 0} />
@@ -82,7 +82,7 @@ function Pipeline({ k, funnel }) {
           </Link>
         ))}
       </div>
-      <div className="relative h-[2px] w-full bg-[linear-gradient(90deg,#7b87f5,#7b87f5_40%,#ff645a_70%,#3fd99a)] opacity-70">
+      <div className="relative h-[2px] w-full bg-line opacity-70">
         <div className="flow-line absolute inset-0" />
       </div>
     </section>
@@ -93,9 +93,9 @@ function Onboarding() {
   const pains = session.data?.company?.painPoints || [];
   const extra = [
     pains.includes('gst_itc') && { icon: Landmark, title: 'Upload your GSTR-2B', body: 'See which suppliers haven’t filed and how much input tax credit is at risk.', to: '/app/gst', cta: 'GST & ITC' },
-    pains.includes('msme') && { icon: Building2, title: 'Mark your MSME suppliers', body: 'Concord then tracks each invoice’s 45-day payment deadline.', to: '/app/vendors', cta: 'Vendors' },
+    pains.includes('msme') && { icon: Building2, title: 'Mark your MSME suppliers', body: 'Concord then tracks each invoice’s payment deadline (45 days with a written agreement, 15 without).', to: '/app/vendors', cta: 'Vendors' },
     pains.includes('vendor_followup') && { icon: Handshake, title: 'Check autopilot is on', body: 'Silent vendors get a firmer follow-up drafted for approval.', to: '/app/settings', cta: 'Settings' },
-    !pains.includes('msme') && { icon: Building2, title: 'Add vendor details', body: 'Mark MSME suppliers so Concord tracks their 45-day payment deadline.', to: '/app/vendors', cta: 'Vendors' },
+    !pains.includes('msme') && { icon: Building2, title: 'Add vendor details', body: 'Mark MSME suppliers so Concord tracks their 45 or 15-day payment deadline.', to: '/app/vendors', cta: 'Vendors' },
     { icon: Users, title: 'Invite your team', body: 'Members raise disputes, managers approve what goes to vendors.', to: '/app/settings', cta: 'Team' },
   ].filter(Boolean);
   const steps = [
@@ -105,11 +105,11 @@ function Onboarding() {
   ].slice(0, 4);
   return (
     <section className="sheet ring-aurora p-6">
-      <h2 className="text-xl font-semibold text-ink">Set up your workspace</h2>
+      <h2 className="text-xl text-ink">Set up your workspace</h2>
       <p className="mt-1 text-sm text-muted">Four steps to your first caught overcharge. Most teams are done in ten minutes.</p>
       <ol className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {steps.map((s, i) => (
-          <li key={s.title} className="flex flex-col rounded-xl border border-line-2 bg-white/[0.02] p-4">
+          <li key={s.title} className="flex flex-col rounded-xl border border-line-2 bg-ink/[0.02] p-4">
             <span className="flex items-center gap-2 text-xs font-bold text-muted">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-carbon-tint text-carbon-dark">{i + 1}</span>
               <s.icon size={15} />
@@ -148,7 +148,7 @@ export default function Overview() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-[30px] leading-[1.05] font-semibold tracking-[-0.04em] text-ink">
+          <h1 className="text-[30px] leading-[1.05] text-ink">
             {greeting()}, {s?.user?.name?.split(' ')[0]}
           </h1>
           <div className="mt-2 text-[14px] text-muted">{loading ? <Skeleton className="mt-2 h-4 w-80" /> : headline}</div>
@@ -186,8 +186,8 @@ export default function Overview() {
       {k && (k.paymentHolds > 0 || k.itcAtRisk > 0) && (
         <section className="grid gap-3 md:grid-cols-2">
           {(data.holds || []).map((h) => (
-            <Link key={h.id} to="/app/payments" className="glow group flex items-start gap-4 rounded-2xl border border-stamp/25 bg-[linear-gradient(135deg,rgba(255,100,90,0.10),rgba(255,100,90,0.02))] p-5 transition-colors hover:border-stamp/50">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-stamp/15 text-stamp shadow-[0_0_24px_-4px_rgba(255,100,90,0.7)]">
+            <Link key={h.id} to="/app/payments" className="glow group flex items-start gap-4 rounded-2xl border border-stamp/25 bg-stamp-tint p-5 transition-colors hover:border-stamp/50">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-stamp/15 text-stamp">
                 <ShieldAlert size={19} />
               </span>
               <span className="min-w-0">
@@ -197,8 +197,8 @@ export default function Overview() {
             </Link>
           ))}
           {k.itcAtRisk > 0 && (
-            <Link to="/app/gst" className="glow group flex items-start gap-4 rounded-2xl border border-wait/25 bg-[linear-gradient(135deg,rgba(245,185,71,0.09),rgba(245,185,71,0.02))] p-5 transition-colors hover:border-wait/50">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-wait/15 text-wait shadow-[0_0_24px_-4px_rgba(245,185,71,0.6)]">
+            <Link to="/app/gst" className="glow group flex items-start gap-4 rounded-2xl border border-wait/25 bg-wait-tint p-5 transition-colors hover:border-wait/50">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-wait/15 text-wait">
                 <Landmark size={19} />
               </span>
               <span className="min-w-0">
@@ -218,7 +218,7 @@ export default function Overview() {
         {/* Needs attention */}
         <section className="sheet overflow-hidden">
           <header className="flex items-center justify-between border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">Needs your attention</h2>
+            <h2 className="text-[17px] text-ink">Needs your attention</h2>
             <Link to="/app/disputes" className="text-sm font-semibold text-carbon-dark transition-colors hover:text-ink">
               All disputes
             </Link>
@@ -235,7 +235,7 @@ export default function Overview() {
             <ul>
               {(data.needsAttention || []).map((d) => (
                 <li key={d.id} className="border-b border-line-2 last:border-0">
-                  <Link to={`/app/disputes/${d.id}`} className="flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-white/[0.025]">
+                  <Link to={`/app/disputes/${d.id}`} className="flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-ink/[0.025]">
                     <div className="min-w-0 flex-1">
                       <p className="flex min-w-0 items-center gap-2 text-sm">
                         <span className="num shrink-0 font-bold text-ink">{d.reference}</span>
@@ -258,7 +258,7 @@ export default function Overview() {
         {/* Pay run */}
         <section className="sheet flex flex-col overflow-hidden">
           <header className="flex items-center justify-between border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">This fortnight’s pay run</h2>
+            <h2 className="text-[17px] text-ink">This fortnight’s pay run</h2>
             <Link to="/app/payments" className="text-sm font-semibold text-carbon-dark transition-colors hover:text-ink">
               Open pay run
             </Link>
@@ -290,7 +290,7 @@ export default function Overview() {
                       <strong>
                         {pay.data.summary.msmeAtRisk + pay.data.summary.msmeBreached} MSME invoice{pay.data.summary.msmeAtRisk + pay.data.summary.msmeBreached > 1 ? 's' : ''}
                       </strong>{' '}
-                      near or past the 45-day §43B(h) limit. Up to <span className="num font-semibold">{money(pay.data.summary.deductionAtRisk)}</span> of tax cost if missed.
+                      near or past their MSME payment deadline (45 days, or 15 without a written agreement). Up to <span className="num font-semibold">{money(pay.data.summary.deductionAtRisk)}</span> of tax cost if missed.
                     </span>
                   </Link>
                 )}
@@ -318,7 +318,7 @@ export default function Overview() {
         <section className="sheet p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h2 className="text-[17px] font-semibold text-ink">Flagged vs recovered</h2>
+              <h2 className="text-[17px] text-ink">Flagged vs recovered</h2>
               <p className="text-sm text-muted">Per week, last 10 weeks</p>
             </div>
             <Legend
@@ -335,7 +335,7 @@ export default function Overview() {
                   <CartesianGrid vertical={false} stroke={GRID} />
                   <XAxis dataKey="week" tickFormatter={(w) => date(w)} tick={AXIS} axisLine={false} tickLine={false} />
                   <YAxis tickFormatter={moneyShort} tick={AXIS} axisLine={false} tickLine={false} width={56} />
-                  <Tooltip cursor={{ fill: 'rgba(111,125,255,0.06)' }} content={<ChartTooltip labelFormat={(w) => `Week of ${date(w)}`} />} />
+                  <Tooltip cursor={{ fill: 'rgba(27,36,51,0.04)' }} content={<ChartTooltip labelFormat={(w) => `Week of ${date(w)}`} />} />
                   <Bar dataKey="flagged" name="Flagged" fill={SERIES[0]} radius={[4, 4, 0, 0]} maxBarSize={22} />
                   <Bar dataKey="recovered" name="Recovered" fill={SERIES[1]} radius={[4, 4, 0, 0]} maxBarSize={22} />
                 </BarChart>
@@ -347,7 +347,7 @@ export default function Overview() {
         </section>
 
         <section className="sheet p-5">
-          <h2 className="text-[17px] font-semibold text-ink">What went wrong</h2>
+          <h2 className="text-[17px] text-ink">What went wrong</h2>
           <p className="text-sm text-muted">Every issue found, by money involved</p>
           {data && (data.issueBreakdown || []).length === 0 && <p className="py-10 text-center text-sm text-muted">No issues found yet.</p>}
           <ul className="mt-4 space-y-3">
@@ -361,8 +361,8 @@ export default function Overview() {
                     </span>
                     <span className="num font-semibold text-ink">{money(x.amount)}</span>
                   </div>
-                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/[0.05]">
-                    <div className="h-full rounded-full bg-[linear-gradient(90deg,#5d6cf7,#9aa4ff)] shadow-[0_0_12px_rgba(111,125,255,0.6)]" style={{ width: `${Math.max(2, (x.amount / max) * 100)}%` }} />
+                  <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-ink/[0.05]">
+                    <div className="h-full rounded-full bg-carbon" style={{ width: `${Math.max(2, (x.amount / max) * 100)}%` }} />
                   </div>
                 </li>
               );
@@ -374,7 +374,7 @@ export default function Overview() {
       <div className="grid gap-6 xl:grid-cols-[1.35fr_1fr]">
         <section className="sheet overflow-hidden">
           <header className="flex items-center justify-between border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">Vendors with the most disputes</h2>
+            <h2 className="text-[17px] text-ink">Vendors with the most disputes</h2>
             <Link to="/app/vendors" className="text-sm font-semibold text-carbon-dark transition-colors hover:text-ink">
               All vendors
             </Link>
@@ -434,14 +434,14 @@ export default function Overview() {
 
         <section className="sheet overflow-hidden">
           <header className="border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">Activity</h2>
+            <h2 className="text-[17px] text-ink">Activity</h2>
           </header>
           <ul className="max-h-[380px] overflow-y-auto px-5 py-2">
             {feed.data?.map((a) => {
               const Icon = ACT_ICON[a.kind] || FileText;
               const inner = (
                 <>
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-line-2 bg-white/[0.03] text-muted">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-line-2 bg-ink/[0.03] text-muted">
                     <Icon size={14} />
                   </span>
                   <span className="min-w-0 flex-1">
@@ -457,7 +457,7 @@ export default function Overview() {
               return (
                 <li key={a._id} className="border-b border-line-2 last:border-0">
                   {to ? (
-                    <Link to={to} className="-mx-2 flex gap-3 rounded-lg px-2 py-2.5 hover:bg-white/[0.025]">
+                    <Link to={to} className="-mx-2 flex gap-3 rounded-lg px-2 py-2.5 hover:bg-ink/[0.025]">
                       {inner}
                     </Link>
                   ) : (

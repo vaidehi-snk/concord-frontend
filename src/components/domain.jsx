@@ -50,7 +50,7 @@ export function ThreeWayTable({ po, dn, invoice, flags = [] }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[720px] text-sm">
         <thead>
-          <tr className="text-[11px] font-semibold tracking-wide text-muted">
+          <tr className="text-xs font-semibold tracking-wide text-muted">
             <th className="px-4 py-2.5 text-left">Item</th>
             <th className="border-b border-po-edge/40 bg-po px-4 py-2.5 text-right">
               Ordered <span className="font-normal text-muted">{po?.docNumber}</span>
@@ -132,7 +132,7 @@ export function Checklist({ checks = [], compact = false }) {
           <li key={c.code} className="flex items-start gap-2 text-sm" title={c.detail || ''}>
             <span
               className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
-                c.status === 'pass' ? 'bg-ok/15 text-ok ring-1 ring-ok/40' : c.status === 'fail' ? 'bg-stamp/15 text-stamp ring-1 ring-stamp/50 shadow-[0_0_12px_rgba(255,100,90,0.45)]' : 'border border-faint/50 text-faint'
+                c.status === 'pass' ? 'bg-ok/15 text-ok ring-1 ring-ok/40' : c.status === 'fail' ? 'bg-stamp/15 text-stamp ring-1 ring-stamp/50' : 'border border-faint/50 text-faint'
               }`}
             >
               {c.status === 'pass' ? <Check size={11} strokeWidth={3} /> : c.status === 'fail' ? <X size={11} strokeWidth={3} /> : <Minus size={10} />}
@@ -159,7 +159,7 @@ export function FlagCard({ flag, defaultOpen = false }) {
         {hasEvidence && <ChevronDown size={16} className={`mt-0.5 shrink-0 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />}
       </button>
       {open && (
-        <div className="animate-in mx-4 mb-4 grid gap-3 rounded-xl border border-line-2 bg-black/25 p-4 text-sm sm:grid-cols-3">
+        <div className="animate-in mx-4 mb-4 grid gap-3 rounded-xl border border-line-2 bg-ink/[0.035] p-4 text-sm sm:grid-cols-3">
           {flag.expected !== undefined && (
             <div>
               <p className="text-xs text-muted">Should be{flag.expectedSource ? `, per ${flag.expectedSource}` : ''}</p>

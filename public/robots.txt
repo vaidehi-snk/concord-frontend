@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /respond/
+
+Sitemap: https://concord-frontend-five.vercel.app/sitemap.xml

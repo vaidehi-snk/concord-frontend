@@ -33,7 +33,7 @@ export default class ErrorBoundary extends Component {
       <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
         <p className="font-display text-2xl font-bold text-ink">This page hit a snag</p>
         <p className="mt-2 text-sm text-muted">Nothing was lost. Reload to pick up where you were — if Concord was just updated, this fetches the new version.</p>
-        <p className="num mt-4 max-w-full rounded-lg border border-line-2 bg-black/30 px-3 py-2 text-left text-xs break-words text-faint">{String(this.state.error?.message || this.state.error).slice(0, 300)}</p>
+        <p className="num mt-4 max-w-full rounded-lg border border-line-2 bg-ink/[0.035] px-3 py-2 text-left text-xs break-words text-faint">{String(this.state.error?.message || this.state.error).slice(0, 300)}</p>
         <div className="mt-6 flex gap-2">
           <button className="btn-primary" onClick={() => window.location.reload()}>
             <RotateCw size={15} /> Reload

@@ -13,7 +13,7 @@ export default function ServerStatus() {
   if (state === 'ok') return null;
   return (
     <div role="status" className="animate-in fixed top-3 left-1/2 z-[70] -translate-x-1/2">
-      <div className="flex items-center gap-3 rounded-full border border-line bg-raised/90 px-4 py-2 text-sm text-ink-2 shadow-2xl backdrop-blur-xl">
+      <div className="flex items-center gap-3 rounded-full border border-line bg-raised/90 px-4 py-2 text-sm text-ink-2 shadow-2xl ">
         <span className="relative flex h-2.5 w-2.5">
           <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${state === 'down' ? 'bg-stamp' : 'bg-wait'}`} />
           <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${state === 'down' ? 'bg-stamp' : 'bg-wait'}`} />

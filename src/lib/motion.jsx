@@ -24,34 +24,26 @@ export function installReveal() {
 }
 
 // Number that counts up to its value the first time it is on screen
-export function useCountUp(target, { duration = 1200 } = {}) {
+export function useCountUp(target, { duration = 900 } = {}) {
   const ref = useRef(null);
-  const [v, setV] = useState(0);
+  // Start at the real value: the number is never wrong, only animated when it
+  // is on screen as the page opens.
+  const [v, setV] = useState(target);
   useEffect(() => {
     const el = ref.current;
-    if (!el || !Number.isFinite(target)) {
-      setV(target);
-      return undefined;
-    }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setV(target);
-      return undefined;
-    }
+    setV(target);
+    if (!el || !Number.isFinite(target) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const r = el.getBoundingClientRect();
+    if (r.top > window.innerHeight || r.bottom < 0) return undefined;
     let raf = 0;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      const t0 = performance.now();
-      const tick = (t) => {
-        const p = Math.min(1, (t - t0) / duration);
-        setV(target * (1 - Math.pow(1 - p, 3)));
-        if (p < 1) raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-    });
-    io.observe(el);
+    const t0 = performance.now();
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / duration);
+      setV(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
     return () => {
-      io.disconnect();
       cancelAnimationFrame(raf);
     };
   }, [target, duration]);

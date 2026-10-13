@@ -131,7 +131,7 @@ export default function Gst() {
 
           {s.vendorsToChase?.length > 0 && (
             <section className="mt-8">
-              <h2 className="text-xl font-semibold text-ink">Suppliers to chase</h2>
+              <h2 className="text-xl text-ink">Suppliers to chase</h2>
               <div className="mt-4 grid gap-3 md:grid-cols-2">
                 {(s.vendorsToChase || []).map((v) => {
                   const msg = reminder(v, company);

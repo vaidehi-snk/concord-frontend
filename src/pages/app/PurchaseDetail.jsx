@@ -10,9 +10,9 @@ import { useToast } from '../../components/toast';
 import { useShell } from '../../components/AppShell';
 
 const PAPER = {
-  PO: 'bg-po border-po-edge/50 shadow-[0_0_50px_-20px_rgba(124,140,255,0.6)]',
-  DN: 'bg-dn border-dn-edge/50 shadow-[0_0_50px_-20px_rgba(240,196,84,0.5)]',
-  INVOICE: 'bg-inv border-inv-edge/50 shadow-[0_0_50px_-20px_rgba(246,128,152,0.5)]',
+  PO: 'bg-po border-po-edge/50',
+  DN: 'bg-dn border-dn-edge/50',
+  INVOICE: 'bg-inv border-inv-edge/50',
 };
 
 function DocSlot({ type, doc }) {
@@ -27,7 +27,7 @@ function DocSlot({ type, doc }) {
     );
   return (
     <div className={`min-h-[132px] rounded-xl border p-4 ${PAPER[type]}`}>
-      <div className="flex items-baseline justify-between gap-2 border-b border-white/10 pb-2">
+      <div className="flex items-baseline justify-between gap-2 border-b border-ink/10 pb-2">
         <span className="text-xs font-bold tracking-wide text-ink-2">{DOC[type].label}</span>
         <span className="num text-sm font-bold text-ink">{doc.docNumber || '—'}</span>
       </div>
@@ -98,7 +98,7 @@ export default function PurchaseDetail() {
       </Link>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="num text-[30px] leading-none font-semibold tracking-[-0.04em] text-ink">{m.poNumber}</h1>
+          <h1 className="num text-[30px] leading-none text-ink">{m.poNumber}</h1>
           <p className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted">
             {m.vendor && (
               <Link to={`/app/vendors/${m.vendor._id}`} className="font-semibold text-ink-2 hover:text-carbon-dark">
@@ -158,7 +158,7 @@ export default function PurchaseDetail() {
 
       <section className="sheet mt-6 overflow-hidden">
         <header className="border-b border-line-2 px-5 py-4">
-          <h2 className="text-[17px] font-semibold text-ink">Line by line</h2>
+          <h2 className="text-[17px] text-ink">Line by line</h2>
           <p className="text-sm text-muted">What was ordered, what arrived, and what was billed.</p>
         </header>
         {m.po || m.invoice ? <ThreeWayTable po={m.po} dn={m.deliveryNote} invoice={m.invoice} flags={flags} /> : <p className="p-5 text-sm text-muted">No documents with line items yet.</p>}
@@ -166,7 +166,7 @@ export default function PurchaseDetail() {
 
       {data.checks && (
         <section className="sheet mt-6 p-5">
-          <h2 className="mb-4 text-[17px] font-semibold text-ink">Checks</h2>
+          <h2 className="mb-4 text-[17px] text-ink">Checks</h2>
           <Checklist checks={data.checks} />
         </section>
       )}

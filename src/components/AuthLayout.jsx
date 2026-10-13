@@ -1,85 +1,71 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Lock, Server } from 'lucide-react';
-import { Logo, Stamp } from './ui';
-import { CatchTicker } from './marketing';
+import { Lock, ShieldCheck } from 'lucide-react';
+import { Logo } from './ui';
+import { INVOICE_NOTES } from './marketing';
+import { warmUp } from '../lib/api';
 
-// Form on the left; on the right, a lit "night desk" that shows what Concord
-// actually does — the three documents, the stamp, and real catches cycling by.
+// Form on the left; on the right, one real catch on paper, so the screen says
+// what Concord does while someone signs in.
 export default function AuthLayout({ children, aside }) {
+  useEffect(() => {
+    // the free server sleeps; wake it while the person types
+    warmUp();
+  }, []);
+
   return (
-    <div className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div className="relative flex flex-col px-5 py-6 sm:px-10 lg:px-16">
+    <div className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="relative flex flex-col px-4 py-5 sm:px-10 lg:px-16">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <div className="flex items-center justify-between">
-          <Link to="/">
+          <Link to="/" aria-label="Concord home" className="rounded-md">
             <Logo />
           </Link>
-          <Link to="/" className="text-[13px] text-muted transition-colors hover:text-ink">
+          <Link to="/" className="rounded-md px-2 py-2 text-sm text-muted transition-colors hover:text-ink">
             Back to site
           </Link>
         </div>
-        <div className="mx-auto flex w-full max-w-[420px] flex-1 flex-col justify-center py-12">{children}</div>
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-faint">
+        <main id="main" className="mx-auto flex w-full max-w-[420px] flex-1 flex-col justify-center py-10">
+          {children}
+        </main>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[13px] text-muted">
           <span className="inline-flex items-center gap-1.5">
-            <Lock size={12} /> Encrypted in transit
+            <Lock size={13} /> Encrypted in transit
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <ShieldCheck size={12} /> Your data is visible only to your workspace
+            <ShieldCheck size={13} /> Only your workspace sees your data
           </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Server size={12} /> Hosted on secure cloud
-          </span>
+          <Link to="/privacy" className="py-2 underline-offset-2 hover:text-ink hover:underline">
+            Privacy
+          </Link>
+          <Link to="/terms" className="py-2 underline-offset-2 hover:text-ink hover:underline">
+            Terms
+          </Link>
         </div>
       </div>
 
-      <aside className="relative m-3 hidden overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#070a12] lg:block">
-        <div className="aurora pointer-events-none absolute -inset-20 opacity-70" />
-        <div className="grid-lines pointer-events-none absolute inset-0" />
-        <div className="relative flex h-full flex-col justify-between p-12 xl:p-16">
+      <aside className="hidden border-l border-line bg-band lg:block">
+        <div className="flex h-full flex-col justify-center px-12 py-16 xl:px-20">
           {aside || (
             <>
-              <div>
-                <p className="kicker">What Concord caught this week, in the sample company</p>
-                <div className="mt-4 max-w-md">
-                  <CatchTicker />
-                </div>
-              </div>
-              <div className="relative mx-auto h-[290px] w-full max-w-[460px]">
-                {[
-                  ['bg-sheet-po', 'PURCHASE ORDER', 'PO-4471', '500 × ₹48', '-rotate-[5deg] top-0 left-0'],
-                  ['bg-sheet-dn', 'DELIVERY CHALLAN', 'DC-8842', '420 received', 'rotate-[2deg] top-16 left-10'],
-                  ['bg-sheet-inv', 'TAX INVOICE', 'SGE/1182', '500 × ₹48', '-rotate-[1deg] top-32 left-20'],
-                ].map(([bg, t, n, v, pos]) => (
-                  <div key={t} className={`absolute w-[300px] rounded-xl ${bg} p-4 text-sheet-ink shadow-[0_40px_80px_-20px_rgba(0,0,0,0.95)] ${pos}`}>
-                    <div className="flex justify-between border-b border-sheet-ink/10 pb-2 text-[11px] font-extrabold text-sheet-ink/70">
-                      <span>{t}</span>
-                      <span className="num">{n}</span>
-                    </div>
-                    <div className="mt-3 flex justify-between text-sm">
-                      <span className="text-sheet-ink/70">MS Bracket 40×40</span>
-                      <span className={`num font-semibold ${t === 'DELIVERY CHALLAN' ? 'text-[#c3302b]' : ''}`}>{v}</span>
-                    </div>
-                  </div>
-                ))}
-                <div className="absolute top-[228px] left-[250px]">
-                  <Stamp land className="text-xl">
-                    ₹4,531 held
-                  </Stamp>
-                </div>
-              </div>
-              <div>
-                <p className="max-w-md font-display text-[28px] leading-[1.12] font-semibold tracking-[-0.03em] text-ink">Every invoice checked against what you ordered and what actually arrived — before you pay it.</p>
-                <div className="mt-8 grid max-w-md grid-cols-3 gap-3">
-                  {[
-                    ['13', 'checks per purchase'],
-                    ['45-day', 'MSME deadline tracking'],
-                    ['GSTR-2B', 'ITC reconciliation'],
-                  ].map(([a, b]) => (
-                    <div key={b} className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3 backdrop-blur">
-                      <p className="figure text-[19px] text-ink">{a}</p>
-                      <p className="mt-1 text-[11.5px] leading-snug text-muted">{b}</p>
-                    </div>
+              <p className="max-w-[16em] font-display text-[34px] leading-[1.12] text-ink">Every invoice checked against what you ordered and what arrived, before you pay it.</p>
+              <div className="relative mt-10 max-w-[460px] rotate-[-1deg] rounded-[3px] bg-sheet-inv px-7 pt-6 pb-8 text-sheet-ink shadow-[0_16px_34px_-18px_rgba(27,36,51,0.35)]">
+                <p className="font-display text-[18px] font-semibold">INV-5860, Shree Ganesh Engineering</p>
+                <p className="mt-0.5 text-[13px] text-[#5a6170]">Checked against PO-2760 and challan DC-5860</p>
+                <ul className="mt-4">
+                  {INVOICE_NOTES.map((x) => (
+                    <li key={x.n} className="flex items-baseline justify-between gap-4 border-t border-dashed border-sheet-ink/20 py-2.5 text-[14px]">
+                      <span>{x.title}</span>
+                      <span className={`num font-semibold ${x.ok ? 'text-ok' : 'text-stamp'}`}>{x.amount || (x.ok ? 'Passed' : 'On hold')}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
+                <span className="lp-stamp stamp-land" style={{ right: '-18px', bottom: '-22px' }}>
+                  <small>Held</small>
+                  <b>₹4,130</b>
+                </span>
               </div>
             </>
           )}

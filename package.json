@@ -5,14 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/hanken-grotesk": "^5.3.0",
-    "@fontsource/saira-condensed": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "lucide-react": "^1.55.0",
     "react": "^19.2.8",

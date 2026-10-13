@@ -84,7 +84,7 @@ export default function VendorDetail() {
       </Link>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-[28px] leading-tight font-semibold tracking-[-0.035em] text-ink">{v.name}</h1>
+          <h1 className="text-[28px] leading-tight text-ink">{v.name}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
             {v.gstin ? (
               data.gst?.valid ? (
@@ -128,9 +128,9 @@ export default function VendorDetail() {
       )}
 
       {v.bankAccounts?.length > 0 && (
-        <section className={`sheet mb-6 overflow-hidden ${(v.bankAccounts || []).some((b) => b.status === 'unverified') ? 'border-stamp/40 shadow-[0_0_60px_-20px_rgba(255,100,90,0.5)]' : ''}`}>
+        <section className={`sheet mb-6 overflow-hidden ${(v.bankAccounts || []).some((b) => b.status === 'unverified') ? 'border-stamp/40' : ''}`}>
           <header className="border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">Bank accounts</h2>
+            <h2 className="text-[17px] text-ink">Bank accounts</h2>
             <p className="text-sm text-muted">Every account this vendor’s invoices have asked to be paid into. A new one blocks payment until someone verifies it.</p>
           </header>
           <ul>
@@ -150,7 +150,7 @@ export default function VendorDetail() {
                 {b.status === 'unverified' &&
                   (canVerify ? (
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-[#ff8f87]">Called {v.contactName || 'the vendor'} on a number you already had?</span>
+                      <span className="text-xs text-stamp">Called {v.contactName || 'the vendor'} on a number you already had?</span>
                       <button className="btn-secondary btn-sm" disabled={!!busyAcct} onClick={() => decide(b.account, 'trust')}>
                         {busyAcct === b.account + 'trust' ? <Loader2 size={13} className="animate-spin" /> : <ShieldCheck size={13} />} Confirmed, release payment
                       </button>
@@ -184,8 +184,8 @@ export default function VendorDetail() {
                     <span className="text-faint">/{max}</span>
                   </span>
                 </div>
-                <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/[0.06]">
-                  <div className="h-full rounded-full bg-[linear-gradient(90deg,#5d6cf7,#aab3ff)]" style={{ width: `${(risk.parts[k] / max) * 100}%` }} />
+                <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-ink/[0.06]">
+                  <div className="h-full rounded-full bg-carbon" style={{ width: `${(risk.parts[k] / max) * 100}%` }} />
                 </div>
               </li>
             ))}
@@ -211,7 +211,7 @@ export default function VendorDetail() {
         </section>
 
         <section className="sheet min-w-0 p-5">
-          <h2 className="text-[17px] font-semibold text-ink">Price history</h2>
+          <h2 className="text-[17px] text-ink">Price history</h2>
           <p className="text-sm text-muted">Rates on every PO and invoice from this vendor. Catches slow creep that no single invoice reveals.</p>
           {series.length === 0 ? (
             <p className="py-16 text-center text-sm text-muted">Needs at least two documents with the same item to draw a trend.</p>
@@ -273,7 +273,7 @@ export default function VendorDetail() {
       <div className="mt-6 grid gap-6 xl:grid-cols-2">
         <section className="sheet overflow-hidden">
           <header className="border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">Disputes</h2>
+            <h2 className="text-[17px] text-ink">Disputes</h2>
           </header>
           <table className="table-ledger">
             <tbody>
@@ -301,7 +301,7 @@ export default function VendorDetail() {
         </section>
         <section className="sheet overflow-hidden">
           <header className="border-b border-line-2 px-5 py-4">
-            <h2 className="text-[17px] font-semibold text-ink">Purchases</h2>
+            <h2 className="text-[17px] text-ink">Purchases</h2>
           </header>
           <table className="table-ledger">
             <tbody>

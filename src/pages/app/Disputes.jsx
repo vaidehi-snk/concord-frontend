@@ -71,7 +71,7 @@ export default function Disputes() {
         subtitle="Each one has the evidence attached: which document says what, and how the amount was worked out."
         actions={
           <>
-            <button className="btn-secondary" title="Debit-note vouchers for every settled dispute, ready to import into Tally Prime" onClick={() => download('/reports/tally-debit-notes', 'concord-tally-debit-notes.xml').catch((e) => toast(e.message, { tone: 'error' }))}>
+            <button className="btn-secondary" title="Debit-note vouchers for every settled dispute, ready to import into TallyPrime" onClick={() => download('/reports/tally-debit-notes', 'concord-tally-debit-notes.xml').catch((e) => toast(e.message, { tone: 'error' }))}>
               <FileSpreadsheet size={15} /> Export to Tally
             </button>
             <button className="btn-secondary" onClick={() => download('/audit-trail/export', 'concord-audit-trail.csv').catch((e) => toast(e.message, { tone: 'error' }))}>
@@ -140,7 +140,7 @@ export default function Disputes() {
                   return (
                     <tr key={d._id} className="row-link" onClick={() => navigate(`/app/disputes/${d._id}`)}>
                       <td onClick={(e) => e.stopPropagation()}>
-                        {!closed && <input type="checkbox" className="h-4 w-4 accent-[#6f7dff]" checked={sel.includes(d._id)} onChange={() => toggle(d._id)} aria-label={`Select ${d.reference}`} />}
+                        {!closed && <input type="checkbox" className="h-4 w-4 accent-[#2b4c8c]" checked={sel.includes(d._id)} onChange={() => toggle(d._id)} aria-label={`Select ${d.reference}`} />}
                       </td>
                       <td>
                         <Link to={`/app/disputes/${d._id}`} className="num font-semibold text-ink hover:text-carbon-dark" onClick={(e) => e.stopPropagation()}>
@@ -217,7 +217,7 @@ export default function Disputes() {
         <p className="mb-3 text-sm text-muted">
           The draft has been added to each dispute and is waiting for manager approval. Written by {batch?.generatedBy === 'llm' ? 'the AI agent' : 'Concord’s templates'} on {date(new Date())}.
         </p>
-        <pre className="max-h-[50vh] overflow-y-auto rounded-xl border border-line-2 bg-black/25 p-4 font-sans text-sm whitespace-pre-wrap text-ink-2">{batch?.body}</pre>
+        <pre className="max-h-[50vh] overflow-y-auto rounded-xl border border-line-2 bg-ink/[0.035] p-4 font-sans text-sm whitespace-pre-wrap text-ink-2">{batch?.body}</pre>
       </Modal>
     </div>
   );

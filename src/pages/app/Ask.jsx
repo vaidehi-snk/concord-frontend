@@ -69,10 +69,10 @@ export default function Ask() {
       <div className="flex-1">
         {msgs.length === 0 ? (
           <div className="pt-6 sm:pt-12">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-carbon/40 bg-carbon-tint text-carbon-dark shadow-[0_0_40px_-6px_rgba(111,125,255,0.8)]">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-carbon/40 bg-carbon-tint text-carbon-dark">
               <MessageSquareText size={22} />
             </span>
-            <h1 className="mt-6 text-[30px] leading-[1.05] font-semibold tracking-[-0.04em] text-ink">Ask about your payables</h1>
+            <h1 className="mt-6 text-[30px] leading-[1.05] text-ink">Ask about your payables</h1>
             <p className="mt-3 max-w-lg text-[15px] text-muted">Answers come only from your own invoices, disputes, vendors and payments — with references you can click through to.</p>
             <div className="mt-8 grid gap-2 sm:grid-cols-2">
               {SUGGESTIONS.map((s) => (
@@ -118,7 +118,7 @@ export default function Ask() {
           send();
         }}
       >
-        <div className="flex items-end gap-2 rounded-2xl border border-line bg-raised/90 p-2 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.9)] backdrop-blur-xl transition-all focus-within:border-carbon/60 focus-within:shadow-[0_0_0_4px_rgba(111,125,255,0.12),0_20px_60px_-15px_rgba(0,0,0,0.9)]">
+        <div className="flex items-end gap-2 rounded-2xl border border-line bg-raised/90 p-2 shadow-[0_18px_40px_-18px_rgba(27,36,51,0.35)]  transition-all focus-within:border-carbon/60 focus-within:">
           <textarea
             rows={1}
             value={q}

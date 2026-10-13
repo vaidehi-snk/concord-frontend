@@ -1,15 +1,47 @@
 <!doctype html>
-<html lang="en" style="background:#05070d">
+<html lang="en" style="background:#f6f2ea">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#05070D" />
-    <meta name="description" content="Concord matches every purchase order, delivery challan and GST invoice line by line, catches overbilling, and settles the difference with your vendor." />
-    <title>Concord — Pay only for what you ordered and received</title>
+    <title>Concord: pay only for what you ordered and received</title>
+    <meta name="description" content="Concord checks every purchase order, delivery challan and GST invoice line by line for Indian manufacturers and traders, holds back what doesn't match, and settles it with your vendor." />
+    <link rel="canonical" href="https://concord-frontend-five.vercel.app/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f6f2ea" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Concord" />
+    <meta property="og:url" content="https://concord-frontend-five.vercel.app/" />
+    <meta property="og:title" content="Concord: pay only for what you ordered and received" />
+    <meta property="og:description" content="Every purchase order, challan and GST invoice checked line by line. Short deliveries, rate creep, duplicate bills and bank-detail fraud held before you pay." />
+    <meta property="og:image" content="https://concord-frontend-five.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A purchase order, challan and invoice, with the invoice stamped held for ₹4,130" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Concord: pay only for what you ordered and received" />
+    <meta name="twitter:description" content="Every purchase order, challan and GST invoice checked line by line before you pay." />
+    <meta name="twitter:image" content="https://concord-frontend-five.vercel.app/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          { "@type": "Organization", "name": "Concord", "url": "https://concord-frontend-five.vercel.app/", "logo": "https://concord-frontend-five.vercel.app/favicon.svg" },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Concord",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "description": "Three-way matching of purchase orders, delivery challans and GST invoices for Indian businesses, with GSTR-2B reconciliation and MSME payment deadlines.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

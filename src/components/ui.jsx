@@ -2,16 +2,14 @@ import { useEffect, useRef } from 'react';
 import { X, AlertTriangle, RotateCw } from 'lucide-react';
 import { DOC, STATUS, initials } from '../lib/format';
 
-export function Logo({ className = '', light = false }) {
+export function Logo({ className = '' }) {
   return (
-    <span className={`inline-flex items-center gap-2.5 font-display font-bold tracking-tight text-ink ${light ? '' : ''} ${className}`}>
-      <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0 drop-shadow-[0_0_12px_rgba(111,125,255,0.45)]" aria-hidden>
-        <rect x="9" y="3" width="18" height="22" rx="2.5" fill="#FBDEE4" stroke="#05070D" strokeWidth="1.4" />
-        <rect x="6" y="6" width="18" height="22" rx="2.5" fill="#FBF0C8" stroke="#05070D" strokeWidth="1.4" />
-        <rect x="3" y="9" width="18" height="20" rx="2.5" fill="#E9EDFF" stroke="#05070D" strokeWidth="1.4" />
-        <path d="M7.5 19.5l3 3 6-7" fill="none" stroke="#4F5DE8" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    <span className={`inline-flex items-center gap-2.5 font-display text-ink ${className}`}>
+      <svg viewBox="0 0 28 28" className="h-6 w-6 shrink-0 -rotate-12 text-stamp" aria-hidden>
+        <circle cx="14" cy="14" r="11.5" fill="none" stroke="currentColor" strokeWidth="2.2" />
+        <circle cx="14" cy="14" r="5" fill="currentColor" />
       </svg>
-      <span className="text-[1.2rem] tracking-[-0.03em]">Concord</span>
+      <span className="text-[1.3rem] font-semibold tracking-[-0.01em]">Concord</span>
     </span>
   );
 }
@@ -50,11 +48,11 @@ export function TriplicateSlots({ po, dn, invoice, size = 'md' }) {
 }
 
 const TONES = {
-  red: 'bg-stamp-tint text-[#ff8f87] ring-1 ring-inset ring-stamp/20',
+  red: 'bg-stamp-tint text-stamp ring-1 ring-inset ring-stamp/20',
   green: 'bg-ok-tint text-ok ring-1 ring-inset ring-ok/20',
   amber: 'bg-wait-tint text-wait ring-1 ring-inset ring-wait/20',
   blue: 'bg-carbon-tint text-carbon-dark ring-1 ring-inset ring-carbon/25',
-  grey: 'bg-white/[0.05] text-ink-2 ring-1 ring-inset ring-white/[0.06]',
+  grey: 'bg-ink/[0.05] text-ink-2 ring-1 ring-inset ring-ink/[0.06]',
 };
 
 export function Badge({ tone = 'grey', children, className = '' }) {
@@ -88,7 +86,7 @@ export function Stamp({ tone = 'red', children, land = false, paper = false, cla
 
 export function Avatar({ name, className = '' }) {
   return (
-    <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_25%,#3b4690,#141a36)] text-[11px] font-bold text-carbon-dark ring-1 ring-white/10 ${className}`} aria-hidden>
+    <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-carbon-tint text-xs font-bold text-carbon-dark ring-1 ring-ink/10 ${className}`} aria-hidden>
       {initials(name)}
     </span>
   );
@@ -98,7 +96,7 @@ export function PageHeader({ title, subtitle, actions, children }) {
   return (
     <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
-        <h1 className="text-[28px] leading-[1.1] font-semibold tracking-[-0.035em] text-ink">{title}</h1>
+        <h1 className="text-[28px] leading-[1.1] text-ink">{title}</h1>
         {subtitle && <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-muted">{subtitle}</p>}
         {children}
       </div>
@@ -111,7 +109,7 @@ export function EmptyState({ icon: Icon, title, body, action }) {
   return (
     <div className="flex flex-col items-center px-6 py-14 text-center">
       {Icon && (
-        <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-line bg-white/[0.03] text-carbon-dark shadow-[0_0_40px_-8px_rgba(111,125,255,0.5)]">
+        <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-line bg-ink/[0.03] text-carbon-dark">
           <Icon size={22} />
         </span>
       )}
@@ -139,7 +137,7 @@ export function LoadingRows({ rows = 5 }) {
 export function ErrorNote({ error, onRetry }) {
   if (!error) return null;
   return (
-    <div role="alert" className="flex items-start gap-3 rounded-xl border border-stamp/30 bg-stamp-tint px-4 py-3 text-sm text-[#ffb3ad]">
+    <div role="alert" className="flex items-start gap-3 rounded-xl border border-stamp/30 bg-stamp-tint px-4 py-3 text-sm text-stamp">
       <AlertTriangle size={18} className="mt-0.5 shrink-0" />
       <span className="flex-1">{error.message || String(error)}</span>
       {onRetry && (
@@ -153,19 +151,28 @@ export function ErrorNote({ error, onRetry }) {
 
 export function Modal({ open, onClose, title, children, footer, wide = false }) {
   const ref = useRef(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  // Focus once when the modal opens. Depending only on `open` matters: callers pass a
+  // new onClose on every render, which used to re-run this and steal focus on each keystroke.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === 'Escape' && onClose?.();
+    if (!open) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeRef.current?.();
+    };
     document.addEventListener('keydown', onKey);
-    ref.current?.querySelector('input,textarea,select,button')?.focus();
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+    const el = ref.current?.querySelector('input:not([type=hidden]),textarea,select') || ref.current?.querySelector('button');
+    el?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/65 p-0 backdrop-blur-sm sm:items-center sm:p-6" onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
-      <div ref={ref} role="dialog" aria-modal="true" aria-label={title} className={`animate-in max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-line bg-raised shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.06)] sm:rounded-2xl ${wide ? 'sm:max-w-3xl' : 'sm:max-w-lg'}`}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 p-0  sm:items-center sm:p-6" onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
+      <div ref={ref} role="dialog" aria-modal="true" aria-label={title} className={`animate-in max-h-[92vh] w-full overflow-y-auto rounded-t-2xl border border-line bg-raised shadow-[0_18px_40px_-18px_rgba(27,36,51,0.35)] sm:rounded-2xl ${wide ? 'sm:max-w-3xl' : 'sm:max-w-lg'}`}>
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line-2 bg-raised/95 px-5 py-4 backdrop-blur">
-          <h2 className="text-lg font-semibold text-ink">{title}</h2>
+          <h2 className="text-lg text-ink">{title}</h2>
           <button className="btn-ghost btn-sm" onClick={onClose} aria-label="Close">
             <X size={16} />
           </button>
@@ -187,11 +194,11 @@ export function Tabs({ tabs, value, onChange }) {
           aria-selected={value === t.value}
           onClick={() => onChange(t.value)}
           className={`-mb-px flex items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors ${
-            value === t.value ? 'border-carbon text-ink [text-shadow:0_0_20px_rgba(111,125,255,0.6)]' : 'border-transparent text-muted hover:text-ink'
+            value === t.value ? 'border-carbon text-ink' : 'border-transparent text-muted hover:text-ink'
           }`}
         >
           {t.label}
-          {t.count != null && <span className={`num rounded-full px-1.5 text-[11px] ${value === t.value ? 'bg-carbon-tint text-carbon-dark' : 'bg-white/[0.05] text-muted'}`}>{t.count}</span>}
+          {t.count != null && <span className={`num rounded-full px-1.5 text-xs ${value === t.value ? 'bg-carbon-tint text-carbon-dark' : 'bg-ink/[0.05] text-muted'}`}>{t.count}</span>}
         </button>
       ))}
     </div>
@@ -213,8 +220,8 @@ export function Meter({ value, max = 100, tone = 'auto', label }) {
   const color = tone === 'auto' ? (value >= 60 ? 'bg-stamp' : value >= 30 ? 'bg-wait' : 'bg-ok') : tone;
   return (
     <div className="flex items-center gap-2" title={label}>
-      <div className="h-1 w-full min-w-12 overflow-hidden rounded-full bg-white/[0.06]">
-        <div className={`h-full rounded-full ${color} shadow-[0_0_10px_currentColor]`} style={{ width: `${v}%` }} />
+      <div className="h-1 w-full min-w-12 overflow-hidden rounded-full bg-ink/[0.06]">
+        <div className={`h-full rounded-full ${color}`} style={{ width: `${v}%` }} />
       </div>
     </div>
   );

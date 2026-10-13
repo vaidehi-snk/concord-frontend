@@ -110,7 +110,7 @@ function PayRun({ days, setDays }) {
                     <td className="max-w-[260px]">
                       <Badge tone={ACTION[r.action].tone}>{ACTION[r.action].label}</Badge>
                       {r.bankHold && (
-                        <p className="mt-1 text-xs leading-snug text-[#ff8f87]">
+                        <p className="mt-1 text-xs leading-snug text-stamp">
                           {r.bankHold}{' '}
                           {r.vendor?.id && (
                             <Link to={`/app/vendors/${r.vendor.id}`} className="font-semibold underline underline-offset-2">
@@ -147,7 +147,7 @@ function Msme() {
   const s = data?.summary;
   return (
     <>
-      <div className="rounded-2xl border border-wait/25 bg-[linear-gradient(135deg,rgba(245,185,71,0.10),rgba(245,185,71,0.02))] p-6 text-sm text-ink">
+      <div className="rounded-2xl border border-wait/25 bg-wait-tint p-6 text-sm text-ink">
         <p className="flex items-center gap-2 font-bold">
           <ShieldAlert size={18} className="text-wait" /> Income Tax Act, section 43B(h)
         </p>
@@ -226,7 +226,7 @@ function Forecast() {
       <section className="sheet mt-5 p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="text-[17px] font-semibold text-ink">Cash going out, week by week</h2>
+            <h2 className="text-[17px] text-ink">Cash going out, week by week</h2>
             <p className="text-sm text-muted">By due date, including MSME deadlines. Plan the bank balance before the bills arrive.</p>
           </div>
           <Legend
@@ -243,10 +243,10 @@ function Forecast() {
               <CartesianGrid vertical={false} stroke={GRID} />
               <XAxis dataKey="name" tick={AXIS} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={moneyShort} tick={AXIS} axisLine={false} tickLine={false} width={56} />
-              <Tooltip cursor={{ fill: 'rgba(111,125,255,0.06)' }} content={<ChartTooltip />} />
-              <Bar dataKey="verified" name="Verified" stackId="a" fill={SERIES[0]} stroke="#0a0e18" strokeWidth={2} />
-              <Bar dataKey="unverified" name="Waiting on documents" stackId="a" fill={SERIES[1]} stroke="#0a0e18" strokeWidth={2} />
-              <Bar dataKey="held" name="Held back" stackId="a" fill={SERIES[2]} stroke="#0a0e18" strokeWidth={2} radius={[4, 4, 0, 0]} />
+              <Tooltip cursor={{ fill: 'rgba(27,36,51,0.04)' }} content={<ChartTooltip />} />
+              <Bar dataKey="verified" name="Verified" stackId="a" fill={SERIES[0]} stroke="#fffdf8" strokeWidth={2} />
+              <Bar dataKey="unverified" name="Waiting on documents" stackId="a" fill={SERIES[1]} stroke="#fffdf8" strokeWidth={2} />
+              <Bar dataKey="held" name="Held back" stackId="a" fill={SERIES[2]} stroke="#fffdf8" strokeWidth={2} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -286,7 +286,7 @@ function Bank() {
     <>
       <div className="grid gap-5 lg:grid-cols-[1fr_1.2fr]">
         <div className="sheet p-5">
-          <h2 className="text-[17px] font-semibold text-ink">Reconcile a bank statement</h2>
+          <h2 className="text-[17px] text-ink">Reconcile a bank statement</h2>
           <p className="mt-1 text-sm text-muted">Export your current-account statement as CSV from net banking. Concord matches each debit to an invoice — by invoice number in the narration, then vendor and amount — and flags anything paid twice or overpaid.</p>
           <div className="mt-4 flex flex-wrap gap-2">
             <button className="btn-primary" onClick={() => fileRef.current?.click()} disabled={busy}>
@@ -320,7 +320,7 @@ function Bank() {
       </div>
       <div className="sheet mt-5 overflow-hidden">
         <header className="border-b border-line-2 px-5 py-4">
-          <h2 className="text-[17px] font-semibold text-ink">Payments from statements</h2>
+          <h2 className="text-[17px] text-ink">Payments from statements</h2>
         </header>
         {error ? (
           <div className="p-5">
