@@ -1,16 +1,31 @@
-# React + Vite
+# Concord web app
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React 19 + Vite + Tailwind v4, react-router 7, recharts, lucide icons. Dark "night ledger" theme; fonts are self-hosted (Bricolage Grotesque, Hanken Grotesk, Saira Condensed via @fontsource).
 
-Currently, two official plugins are available:
+## Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `/` landing page with an interactive "triplicate" demo, `/login`, `/register`
+- `/app` overview: money at risk, recovered, touchless rate, pay-run summary, MSME alerts, weekly chart, activity
+- `/app/inbox` drag-and-drop upload (any order, auto-detected type), sample purchases, document corrections
+- `/app/purchases` and `/app/purchases/:id` every PO with its three document slots, line-by-line comparison, checks
+- `/app/disputes` and `/app/disputes/:id` evidence, AI-drafted email (3 tones), approval, send by email or WhatsApp, vendor reply assessment, debit note, history
+- `/app/vendors` and `/app/vendors/:id` risk score breakdown, GSTIN check, MSME details, PO-vs-invoice price history
+- `/app/payments` pay run with bank upload file, 8-week cash forecast, MSME §43B(h) deadlines, bank statement reconciliation
+- `/app/gst` GSTR-2B reconciliation: input tax credit at risk, suppliers to chase
+- `/app/ask` questions answered from the company's own data
+- `/app/settings` company, matching rules, autopilot, team roles, API keys and email intake
+- `/respond/:token` public vendor portal (no login)
 
-## React Compiler
+Ctrl/⌘ K opens search from anywhere in the app.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run locally
 
-## Expanding the Oxlint configuration
+```bash
+cp .env.example .env    # VITE_API_URL=http://localhost:5000/api
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Deploy on Vercel
+
+Set `VITE_API_URL=https://<your-render-service>.onrender.com/api` and redeploy. `vercel.json` already rewrites all routes to the SPA.
