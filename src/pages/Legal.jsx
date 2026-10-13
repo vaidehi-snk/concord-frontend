@@ -12,7 +12,7 @@ export function Privacy() {
   return (
     <SitePage title="Privacy policy" updated={UPDATED}>
       <p>
-        This policy explains what Concord collects, why, who processes it for us, and the rights you have under India’s Digital Personal Data Protection Act, 2023. Concord is in pilot and run by its founder, Vaidehi Kakad, in Pune; this policy will be reviewed by a lawyer before general launch.
+        This policy explains what Concord collects, why, who processes it for us, and the rights you have under India’s Digital Personal Data Protection Act, 2023. Concord is in pilot; this policy will be reviewed by a lawyer before general launch.
       </p>
       <h2>What we collect</h2>
       <ul>

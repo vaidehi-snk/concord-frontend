@@ -255,33 +255,6 @@ export default function Landing() {
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
         </section>
 
-        {/* founder */}
-        <section id="team" className="scroll-mt-20 border-t border-line bg-paper">
-          <div className="mx-auto grid max-w-[1200px] items-center gap-10 px-4 py-16 sm:px-8 lg:grid-cols-[7fr_5fr] lg:py-24">
-            <div>
-              <Heading>Who builds Concord</Heading>
-              <p className="mt-5 max-w-[38em] text-[17px] leading-relaxed text-ink-2">
-                Concord is built in Pune by Vaidehi Kakad, a computer engineer who designed and wrote it end to end. It is built for the paperwork Indian factories run on: purchase orders, challans signed at the stores counter, and invoices that don’t always match.
-              </p>
-              <p className="mt-4 max-w-[38em] text-[17px] leading-relaxed text-ink-2">
-                I’m looking for five manufacturers and traders around Pune to run Concord on their real invoices, free, and tell me what’s wrong with it.
-              </p>
-              <Link to="/contact" className="btn-primary mt-7 h-12 px-6 text-base">
-                Become a pilot company
-              </Link>
-            </div>
-            <div className="flex items-center gap-4 lg:justify-self-center">
-              <span aria-hidden className="grid h-20 w-20 shrink-0 -rotate-6 place-items-center rounded-full border-[3px] border-double border-stamp font-display text-2xl font-semibold text-stamp">
-                VK
-              </span>
-              <div>
-                <p className="font-display text-[22px] font-semibold text-ink">Vaidehi Kakad</p>
-                <p className="text-[15px] text-muted">Founder, Concord</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* last call */}
         <section className="mx-auto max-w-[1200px] px-4 py-16 sm:px-8 lg:py-24">
           <div className="grid items-center gap-8 border-y border-ink py-10 lg:grid-cols-[1fr_auto]">

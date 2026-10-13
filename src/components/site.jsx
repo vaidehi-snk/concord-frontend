@@ -128,7 +128,6 @@ const FOOT = [
   {
     title: 'Company',
     links: [
-      ['About the founder', '/#team'],
       ['Contact', '/contact'],
       ['Security', '/security'],
     ],
@@ -172,7 +171,7 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-line">
-        <p className="mx-auto max-w-[1200px] px-4 py-5 text-[13px] text-muted sm:px-8">© 2026 Concord, built by Vaidehi Kakad in Pune. Not yet a registered company.</p>
+        <p className="mx-auto max-w-[1200px] px-4 py-5 text-[13px] text-muted sm:px-8">© 2026 Concord. Made in Pune.</p>
       </div>
     </footer>
   );
