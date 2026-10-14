@@ -29,3 +29,7 @@ npm run dev
 ## Deploy on Vercel
 
 Set `VITE_API_URL=https://<your-render-service>.onrender.com/api` and redeploy. `vercel.json` already rewrites all routes to the SPA.
+
+## License
+
+MIT, see [LICENSE](LICENSE). Copyright (c) 2026 Vaidehi Kakad.

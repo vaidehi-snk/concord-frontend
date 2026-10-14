@@ -180,7 +180,7 @@ export default function Settings() {
             ))}
           </div>
           <label className="mt-2 flex items-start gap-3 border-t border-line-2 pt-4">
-            <input type="checkbox" className="mt-1 h-4 w-4 accent-[#2b4c8c]" disabled={!isAdmin} checked={rules.autopilotFollowUps !== false} onChange={(e) => setRules({ ...rules, autopilotFollowUps: e.target.checked })} />
+            <input type="checkbox" className="mt-1 h-4 w-4 accent-carbon" disabled={!isAdmin} checked={rules.autopilotFollowUps !== false} onChange={(e) => setRules({ ...rules, autopilotFollowUps: e.target.checked })} />
             <span>
               <span className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <Bot size={15} className="text-carbon-dark" /> Autopilot follow-ups

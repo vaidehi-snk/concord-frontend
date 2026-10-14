@@ -243,10 +243,10 @@ function Forecast() {
               <CartesianGrid vertical={false} stroke={GRID} />
               <XAxis dataKey="name" tick={AXIS} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={moneyShort} tick={AXIS} axisLine={false} tickLine={false} width={56} />
-              <Tooltip cursor={{ fill: 'rgba(27,36,51,0.04)' }} content={<ChartTooltip />} />
-              <Bar dataKey="verified" name="Verified" stackId="a" fill={SERIES[0]} stroke="#fffdf8" strokeWidth={2} />
-              <Bar dataKey="unverified" name="Waiting on documents" stackId="a" fill={SERIES[1]} stroke="#fffdf8" strokeWidth={2} />
-              <Bar dataKey="held" name="Held back" stackId="a" fill={SERIES[2]} stroke="#fffdf8" strokeWidth={2} radius={[4, 4, 0, 0]} />
+              <Tooltip cursor={{ fill: 'var(--color-carbon-tint)' }} content={<ChartTooltip />} />
+              <Bar dataKey="verified" name="Verified" stackId="a" fill={SERIES[0]} stroke="var(--color-paper)" strokeWidth={2} />
+              <Bar dataKey="unverified" name="Waiting on documents" stackId="a" fill={SERIES[1]} stroke="var(--color-paper)" strokeWidth={2} />
+              <Bar dataKey="held" name="Held back" stackId="a" fill={SERIES[2]} stroke="var(--color-paper)" strokeWidth={2} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Logo } from './ui';
+import ThemeToggle from './ThemeToggle';
 
 export const NAV = [
   { id: 'catches', label: 'What it catches' },
@@ -76,18 +77,20 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <Link to="/login" className="btn-secondary ml-2 hidden md:inline-flex">
+        <ThemeToggle className="ml-1 hidden md:inline-flex" />
+        <Link to="/login" className="btn-secondary ml-1 hidden md:inline-flex">
           Log in
         </Link>
+        <ThemeToggle className="ml-auto md:hidden" />
         <button
           type="button"
-          className="btn-secondary ml-auto md:hidden"
+          className="btn-secondary md:hidden"
           aria-expanded={open}
           aria-controls="site-menu"
           onClick={() => setOpen((x) => !x)}
         >
           {open ? <X size={16} /> : <Menu size={16} />}
-          Menu
+          <span className="sr-only min-[400px]:not-sr-only">Menu</span>
         </button>
         <Link to="/register" className="btn-primary">
           Start free

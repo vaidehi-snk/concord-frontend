@@ -140,7 +140,7 @@ export default function Disputes() {
                   return (
                     <tr key={d._id} className="row-link" onClick={() => navigate(`/app/disputes/${d._id}`)}>
                       <td onClick={(e) => e.stopPropagation()}>
-                        {!closed && <input type="checkbox" className="h-4 w-4 accent-[#2b4c8c]" checked={sel.includes(d._id)} onChange={() => toggle(d._id)} aria-label={`Select ${d.reference}`} />}
+                        {!closed && <input type="checkbox" className="h-4 w-4 accent-carbon" checked={sel.includes(d._id)} onChange={() => toggle(d._id)} aria-label={`Select ${d.reference}`} />}
                       </td>
                       <td>
                         <Link to={`/app/disputes/${d._id}`} className="num font-semibold text-ink hover:text-carbon-dark" onClick={(e) => e.stopPropagation()}>

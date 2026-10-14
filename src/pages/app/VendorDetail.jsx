@@ -260,8 +260,8 @@ export default function VendorDetail() {
                     <XAxis dataKey="t" tick={AXIS} axisLine={false} tickLine={false} />
                     <YAxis tick={AXIS} axisLine={false} tickLine={false} width={56} domain={[(m) => Math.floor(m * 0.92), (m) => Math.ceil(m * 1.06)]} tickFormatter={(n) => `₹${n}`} />
                     <Tooltip content={<ChartTooltip valueFormat={(n) => money(n, { decimals: n % 1 ? 2 : 0 })} labelFormat={(l) => l} />} />
-                    <Line type="stepAfter" connectNulls dataKey="po" name="Agreed on PO" stroke={SERIES[0]} strokeWidth={2} dot={{ r: 4, fill: SERIES[0], stroke: '#fff', strokeWidth: 2 }} activeDot={{ r: 6 }} />
-                    <Line type="linear" connectNulls dataKey="inv" name="Billed on invoice" stroke={SERIES[2]} strokeWidth={2} dot={{ r: 4, fill: SERIES[2], stroke: '#fff', strokeWidth: 2 }} activeDot={{ r: 6 }} />
+                    <Line type="stepAfter" connectNulls dataKey="po" name="Agreed on PO" stroke={SERIES[0]} strokeWidth={2} dot={{ r: 4, fill: SERIES[0], stroke: 'var(--color-paper)', strokeWidth: 2 }} activeDot={{ r: 6 }} />
+                    <Line type="linear" connectNulls dataKey="inv" name="Billed on invoice" stroke={SERIES[2]} strokeWidth={2} dot={{ r: 4, fill: SERIES[2], stroke: 'var(--color-paper)', strokeWidth: 2 }} activeDot={{ r: 6 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

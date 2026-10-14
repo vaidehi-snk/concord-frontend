@@ -1,9 +1,10 @@
 import { money } from '../lib/format';
 
-// Series colours on the paper surface #FFFDF8: ink-blue, ochre, stamp red
-export const SERIES = ['#2B4C8C', '#B98A2C', '#C8372D'];
-export const GRID = 'rgba(27,36,51,0.08)';
-export const AXIS = { fontSize: 11, fill: '#5b6372' };
+// Series colours come from the theme (index.css), so charts follow light and dark:
+// ink-blue, ochre, stamp red
+export const SERIES = ['var(--color-chart-1)', 'var(--color-chart-2)', 'var(--color-chart-3)'];
+export const GRID = 'var(--color-line-2)';
+export const AXIS = { fontSize: 12, fill: 'var(--color-muted)' };
 
 export function ChartTooltip({ active, payload, label, labelFormat = (l) => l, valueFormat = money }) {
   if (!active || !payload?.length) return null;

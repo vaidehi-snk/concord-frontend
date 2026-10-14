@@ -35,7 +35,7 @@ export default function VendorForm({ value, onChange }) {
       </Field>
         <fieldset className="rounded-xl border border-line p-4">
           <label className="flex items-start gap-3">
-            <input type="checkbox" className="mt-1 h-4 w-4 accent-[#2b4c8c]" checked={!!v.msme} onChange={(e) => set('msme', e.target.checked)} />
+            <input type="checkbox" className="mt-1 h-4 w-4 accent-carbon" checked={!!v.msme} onChange={(e) => set('msme', e.target.checked)} />
             <span>
               <span className="block text-sm font-semibold text-ink">Registered MSME (Udyam)</span>
               <span className="block text-xs text-muted">Micro and small suppliers must be paid within 45 days (15 without a written agreement), or the expense isn’t tax-deductible this year (Income Tax Act §43B(h)).</span>
@@ -54,7 +54,7 @@ export default function VendorForm({ value, onChange }) {
                 <input className="input num" value={v.udyamNumber || ''} onChange={(e) => set('udyamNumber', e.target.value.toUpperCase())} placeholder="UDYAM-MH-26-0012345" />
               </Field>
               <label className="flex items-center gap-2 text-sm text-ink-2 sm:col-span-2">
-                <input type="checkbox" className="h-4 w-4 accent-[#2b4c8c]" checked={v.hasWrittenAgreement !== false} onChange={(e) => set('hasWrittenAgreement', e.target.checked)} />
+                <input type="checkbox" className="h-4 w-4 accent-carbon" checked={v.hasWrittenAgreement !== false} onChange={(e) => set('hasWrittenAgreement', e.target.checked)} />
                 We have a written agreement on payment terms (otherwise the limit is 15 days)
               </label>
             </div>

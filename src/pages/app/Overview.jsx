@@ -20,7 +20,7 @@ function Spark({ values = [], color }) {
   const max = Math.max(...values, 1);
   const pts = values.map((v, i) => [(i / (values.length - 1)) * 100, 30 - (v / max) * 26 - 2]);
   const line = pts.map((p) => p.join(',')).join(' ');
-  const id = `g${color.replace('#', '')}`;
+  const id = `g${color.replace(/[^a-z0-9]/gi, '')}`;
   return (
     <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="h-10 w-full" aria-hidden>
       <defs>
@@ -35,7 +35,7 @@ function Spark({ values = [], color }) {
   );
 }
 
-function Kpi({ label, value, num, fmt, sub, tone = 'ink', to, spark, sparkColor = '#2B4C8C', hero = false }) {
+function Kpi({ label, value, num, fmt, sub, tone = 'ink', to, spark, sparkColor = 'var(--color-carbon)', hero = false }) {
   const color = tone === 'red' ? 'text-stamp' : tone === 'green' ? 'text-ok' : 'text-ink';
   const body = (
     <div className={`sheet group relative flex h-full flex-col overflow-hidden p-5 ${hero ? 'ring-aurora' : ''}`}>
@@ -173,10 +173,10 @@ export default function Overview() {
           ))
         ) : (
           <>
-            <Kpi hero label="Money at risk" num={k.moneyAtRisk} fmt={money} sub={`${k.openDisputes} open disputes`} tone={k.moneyAtRisk ? 'red' : 'ink'} to="/app/disputes" spark={(data.series || []).map((x) => x.flagged)} sparkColor="#ff645a" />
-            <Kpi label="Recovered" num={k.moneyRecovered} fmt={money} sub={`${pct(k.recoveryRate)} of everything flagged`} tone="green" spark={(data.series || []).map((x) => x.recovered)} sparkColor="#3fd99a" />
+            <Kpi hero label="Money at risk" num={k.moneyAtRisk} fmt={money} sub={`${k.openDisputes} open disputes`} tone={k.moneyAtRisk ? 'red' : 'ink'} to="/app/disputes" spark={(data.series || []).map((x) => x.flagged)} sparkColor="var(--color-stamp)" />
+            <Kpi label="Recovered" num={k.moneyRecovered} fmt={money} sub={`${pct(k.recoveryRate)} of everything flagged`} tone="green" spark={(data.series || []).map((x) => x.recovered)} sparkColor="var(--color-ok)" />
             <Kpi label="Touchless matches" num={k.touchlessRate} fmt={(n) => pct(n)} sub={`${k.purchasesChecked} purchases checked, no human needed`} to="/app/purchases" spark={(data.series || []).map((x) => x.matched)} />
-            <Kpi label="Time saved" num={k.hoursSaved} fmt={(n) => `${Math.round(n)} hrs`} sub={`vs ~${k.minutesPerManualMatchAssumed} min per manual 3-way match`} spark={(data.series || []).map((x) => x.documents)} sparkColor="#aab3ff" />
+            <Kpi label="Time saved" num={k.hoursSaved} fmt={(n) => `${Math.round(n)} hrs`} sub={`vs ~${k.minutesPerManualMatchAssumed} min per manual 3-way match`} spark={(data.series || []).map((x) => x.documents)} sparkColor="var(--color-carbon)" />
           </>
         )}
       </section>
@@ -335,7 +335,7 @@ export default function Overview() {
                   <CartesianGrid vertical={false} stroke={GRID} />
                   <XAxis dataKey="week" tickFormatter={(w) => date(w)} tick={AXIS} axisLine={false} tickLine={false} />
                   <YAxis tickFormatter={moneyShort} tick={AXIS} axisLine={false} tickLine={false} width={56} />
-                  <Tooltip cursor={{ fill: 'rgba(27,36,51,0.04)' }} content={<ChartTooltip labelFormat={(w) => `Week of ${date(w)}`} />} />
+                  <Tooltip cursor={{ fill: 'var(--color-carbon-tint)' }} content={<ChartTooltip labelFormat={(w) => `Week of ${date(w)}`} />} />
                   <Bar dataKey="flagged" name="Flagged" fill={SERIES[0]} radius={[4, 4, 0, 0]} maxBarSize={22} />
                   <Bar dataKey="recovered" name="Recovered" fill={SERIES[1]} radius={[4, 4, 0, 0]} maxBarSize={22} />
                 </BarChart>

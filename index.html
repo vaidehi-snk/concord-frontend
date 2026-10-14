@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="background:#f6f2ea">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,16 @@
     <link rel="canonical" href="https://concord-frontend-five.vercel.app/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#f6f2ea" />
+    <script>
+      // Pick the theme before the first paint: saved choice, else the OS setting
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('concord_theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+        if (t === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#121822');
+      })();
+    </script>
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Concord" />

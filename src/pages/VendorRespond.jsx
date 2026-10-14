@@ -1,3 +1,4 @@
+import ThemeToggle from '../components/ThemeToggle';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader2, CheckCircle2, MessageSquareWarning, ShieldCheck } from 'lucide-react';
@@ -85,8 +86,9 @@ export default function VendorRespond() {
       <header className="border-b border-line-2 bg-desk/70 ">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Logo />
-          <span className="flex items-center gap-1.5 text-xs text-muted">
-            <ShieldCheck size={14} /> Private link for this invoice only
+          <span className="flex items-center gap-2 text-xs text-muted">
+            <ShieldCheck size={14} /> <span className="hidden sm:inline">Private link for this invoice only</span>
+            <ThemeToggle />
           </span>
         </div>
       </header>

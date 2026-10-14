@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-do
 import { LayoutDashboard, Inbox, Layers, FileWarning, Building2, Wallet, MessageSquareText, Settings, Search, Menu, X, LogOut, Upload, CornerDownLeft, Landmark } from 'lucide-react';
 import { api, session, warmUp } from '../lib/api';
 import { Logo, Avatar, DocChip, Skeleton } from './ui';
+import ThemeToggle from './ThemeToggle';
 import { money } from '../lib/format';
 
 const ShellCtx = createContext({ kpis: null, refresh: () => {} });
@@ -255,6 +256,7 @@ export default function AppShell() {
             <kbd className="hidden rounded-md border border-line bg-ink/[0.04] px-1.5 py-0.5 text-xs font-semibold text-muted sm:block">Ctrl K</kbd>
           </button>
           <div className="hidden flex-1 lg:block" />
+          <ThemeToggle />
           {kpis && (
             <div className="hidden items-center gap-5 text-sm xl:flex">
               <span className="flex items-center gap-2 text-muted">
